@@ -6,7 +6,7 @@ int t = 0;
 
 void setup() {
   size(800, 800);
-  a = loadTable("../../Log/csv/log_"+str(t)+".csv");
+  a = loadTable("../../Log/csv/csv_parse/log_"+str(t)+".csv");
   b = loadTable("../out"+str(t)+".csv");
   answer = loadTable("../answer"+str(t)+".csv");
 }
