@@ -13,7 +13,7 @@ def readFile():
 def writeFile():
   for i in range(len(field_stone_info)):
     name = "log_"+str(i)+".csv"
-    np.savetxt("../csv/"+name, field_stone_info[i], fmt="%.8f",delimiter=",")
+    np.savetxt("../csv/csv_parse/"+name, field_stone_info[i], fmt="%.8f",delimiter=",")
 
 def analyze():
   s = 1

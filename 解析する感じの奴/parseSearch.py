@@ -14,7 +14,6 @@ np.set_printoptions(threshold=np.inf)
 
 data = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 
-
 def moredata(d, teacher):
   addData = np.copy(d)
   a, b = -1.0, 1.0
@@ -42,7 +41,7 @@ def makemoredata(d, teacher):
   return d, teacher
 
 def init(i):
-  path = "../Log/csv/"
+  path = "../Log/csv/csv_parse/"
   name = "log_"+str(i)+".csv"
   data[i] = np.loadtxt(path+name,delimiter=",")
 
@@ -56,7 +55,7 @@ def network(stone_num):
   teacher = np.eye(2)
   #traindata,teacher = moredata(traindata,teacher)
   answerdata = traindata
-  layer = [Dense(500, input_dim=8 + 8 * stone_num),Activation(act),Dropout(dropout), Dense(1000), Activation(act), Dropout(dropout), Dense(500), Activation(act), Dropout(dropout), Dense(2), Activation("softmax")]
+  layer = [Dense(500, input_dim=8 + 8 * stone_num),Activation("linear"),Dropout(dropout), Dense(1000), Activation(act), Dropout(dropout), Dense(500), Activation(act), Dropout(dropout), Dense(2), Activation("softmax")]
   NN = Sequential()
   for i in layer:
     NN.add(i)
