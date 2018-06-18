@@ -18,7 +18,7 @@ data = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 def moredata(d, teacher):
   addData = np.copy(d)
   a, b = -1.0, 1.0
-  for i in tqdm(range(1000)):
+  for i in range(1000):
     addData[0][0] += ((b - a) * np.random.rand() + a)/100
     addData[0][1] += ((b - a) * np.random.rand() + a)/100
     addData[1][0] += ((b - a) * np.random.rand() + a)/100
@@ -32,7 +32,7 @@ def moredata(d, teacher):
 
 def makemoredata(d, teacher):
   a, b = -1.0, 1.0
-  for i in tqdm(range(1000)):
+  for i in range(1000):
     addData = np.copy(d)
     for x in range(0, len(addData[len(addData)-1]), 3):
       addData[len(addData)-1][x] += ((b - a)* np.random.rand() + a)/100
@@ -56,7 +56,7 @@ def network(stone_num):
   teacher = np.eye(2)
   #traindata,teacher = moredata(traindata,teacher)
   answerdata = traindata
-  layer = [Dense(500, input_dim=8 + 8 * stone_num),Activation("linear"),Dropout(dropout), Dense(1000), Activation(act), Dropout(dropout), Dense(500), Activation(act), Dropout(dropout), Dense(2), Activation("softmax")]
+  layer = [Dense(500, input_dim=8 + 8 * stone_num),Activation(act),Dropout(dropout), Dense(1000), Activation(act), Dropout(dropout), Dense(500), Activation(act), Dropout(dropout), Dense(2), Activation("softmax")]
   NN = Sequential()
   for i in layer:
     NN.add(i)
@@ -129,6 +129,7 @@ def network(stone_num):
     writer = csv.writer(f, lineterminator='\n')  # 改行コード（\n）を指定しておく
     writer.writerow(ch)     # list（1次元配列）の場合
   np.savetxt("answer"+str(stone_num)+".csv",answerdata,delimiter=",")
+
 def zscore(x, axis = None):
   a_x = np.array([x[i][0] for i in range(len(x))])
   a_y = np.array([x[i][1] for i in range(len(x))])
@@ -177,13 +178,13 @@ def network_zscore(stone_num):
       traindata = np.append(traindata, newdata[[testdata.shape[0]-1]].reshape(1, 3 + stone_num*3), axis=0)
       answerdata = np.append(answerdata, newdata[[testdata.shape[0]-1]].reshape(1, 3 + stone_num*3), axis=0)
       addDense1 = Dense(100)
-      addDesen3 = Dense(50)
-      addDense2 = Dense(teacher.shape[1]+1)
+      addDesen2 = Dense(50)
+      addDense3 = Dense(teacher.shape[1]+1)
       NN.add(addDense1)
-      NN.add(Dropout(0.2))
-      NN.add(addDesen3)
-      NN.add(Dropout(0.2))
-      NN.add(addDense2)
+      NN.add(Dropout(dropout))
+      NN.add(addDesen2)
+      NN.add(Dropout(dropout))
+      NN.add(addDense3)
       NN.add(Activation("softmax"))
       NN.compile(optimizer="adam", loss="categorical_crossentropy",metrics=['accuracy'])
       teacher = teacher.T
