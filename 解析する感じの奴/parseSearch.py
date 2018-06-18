@@ -72,13 +72,9 @@ def network(stone_num):
         print(teacher[t].argmax())
         print(testdata[t].argmax())
         print(testdata[t][testdata[t].argmax()])
-        che = input()
-        if che == "y":
+        if teacher[t].argmax() < testdata[t].argmax():
           teacher[t][teacher[t].argmax()] = 0
           teacher[t][testdata[t].argmax()] = 1
-          NN.fit(traindata, teacher, epochs=150 +int(pow(testdata.shape[1], 1.5)))
-        else:
-          pass
         
     print(testdata[testdata.shape[0]-1][testdata[testdata.shape[0]-1].argmax()])
     if testdata[testdata.shape[0]-1][testdata[testdata.shape[0]-1].argmax()] < limit:
