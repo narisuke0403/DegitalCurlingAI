@@ -1,0 +1,9 @@
+Log/Log_txt/
+Log/csv/*.csv
+Log/python/*.txt
+!./Log/csv/log.csv
+解析する感じの奴/*.txt
+解析する感じの奴/*.csv
+解析する感じの奴/*.hdf5
+解析する感じの奴/*.h5
+解析する感じの奴/*.tensorlog
