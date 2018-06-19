@@ -9,6 +9,7 @@ import shutil
 import concurrent.futures
 from sklearn.cluster import KMeans
 import csv
+import copy
 np.set_printoptions(threshold=np.inf)
 
 data = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
@@ -172,7 +173,50 @@ def classtaring(i):
   teacher_num = (i+1)*10
   pred = KMeans(n_clusters=teacher_num).fit_predict(cust_df)
   return pred
+
+
+traindatas = []
+answerdatas = []
+def network_new(_data):
+  act = "relu"
+  newdata = _data
+  dropout = 0.2
+  es_cb = EarlyStopping(monitor='loss',patience=100, verbose=0, mode='auto')
+  layer = [Dense(100, input_dim=len(_data[0])),Activation("linear"),Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(2), Activation("softmax")]
+  NN = Sequential()
+  for i in layer:
+    NN.add(i)
+  traindata = newdata[0:2]
+  answerdatas.append(traindata)
+  teacher = np.eye(2)
+  NN.compile(optimizer="adam", loss="categorical_crossentropy",metrics=['accuracy'])
+  NN.fit(traindata,teacher,epochs=500,callbacks=[es_cb],shuffle=True)
+  tempdata = []
+  _tempdata = []
+  testdata = NN.predict(newdata)
+  for i in range(len(newdata)):
+    if(testdata[i][testdata[i].argmax()] < 0.999):
+      tempdata.append(newdata[i])
+    else:
+      _tempdata.append(newdata[i])
+  if(len(tempdata) == 0):
+    return
+  else:
+    tempdata = np.array(tempdata)
+    _tempdata = np.array(_tempdata)
+    traindatas.append(copy.deepcopy(_tempdata))
+    print(testdata)
+    print(len(tempdata))
+    input()
+    network_new(tempdata)
   
+def write_answer(t):
+  r = 0
+  for i in range(len(t)):
+    np.savetxt("new/outnum_"+str(r)+".csv",t[i])
+    np.savetxt("new/answernum_"+str(r)+".csv",answerdatas[i])
+    r+=1
+    
 
 if __name__ == "__main__":
   """
@@ -183,4 +227,7 @@ if __name__ == "__main__":
   for i in range(15):
     network(i)
   """
-  network_use_classtaring(0)
+  num = 0
+  init(num)
+  network_new(data[num])
+  write_answer(traindatas)
