@@ -177,18 +177,19 @@ def classtaring(i):
 
 traindatas = []
 answerdatas = []
+chs = []
 def network_new(_data):
   act = "relu"
   newdata = _data
   dropout = 0.2
   es_cb = EarlyStopping(monitor='loss',patience=100, verbose=0, mode='auto')
-  layer = [Dense(100, input_dim=len(_data[0])),Activation("linear"),Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(2), Activation("softmax")]
+  traindata = newdata[[int(np.random.randint(0,len(newdata))),int(np.random.randint(0,len(newdata))),int(np.random.randint(0,len(newdata)))]]
+  answerdatas.append(traindata)
+  teacher = np.eye(3)
+  layer = [Dense(100, input_dim=len(_data[0])),Activation("linear"),Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(teacher.shape[1]), Activation("softmax")]
   NN = Sequential()
   for i in layer:
     NN.add(i)
-  traindata = newdata[0:2]
-  answerdatas.append(traindata)
-  teacher = np.eye(2)
   NN.compile(optimizer="adam", loss="categorical_crossentropy",metrics=['accuracy'])
   NN.fit(traindata,teacher,epochs=500,callbacks=[es_cb],shuffle=True)
   tempdata = []
@@ -206,17 +207,21 @@ def network_new(_data):
     _tempdata = np.array(_tempdata)
     traindatas.append(copy.deepcopy(_tempdata))
     print(testdata)
+    testdata = NN.predict(_tempdata)
+    ch = []
+    for i in range(len(testdata)):
+      ch.append(testdata[i].argmax())
+    chs.append(ch)
     print(len(tempdata))
-    input()
     network_new(tempdata)
   
 def write_answer(t):
-  r = 0
   for i in range(len(t)):
-    np.savetxt("new/outnum_"+str(r)+".csv",t[i])
-    np.savetxt("new/answernum_"+str(r)+".csv",answerdatas[i])
-    r+=1
-    
+    np.savetxt("new/data_"+str(i)+".csv",t[i],delimiter=",",fmt="%0.5f")
+    np.savetxt("new/answernum_"+str(i)+".csv",answerdatas[i],delimiter=",",fmt="%0.5f")
+    with open("new/out_"+str(i)+".csv", "w+") as f:
+      writer = csv.writer(f, lineterminator='\n')  # 改行コード（\n）を指定しておく
+      writer.writerow(chs[i])     # list（1次元配列）の場合
 
 if __name__ == "__main__":
   """
