@@ -183,9 +183,9 @@ def network_new(_data):
   newdata = _data
   dropout = 0.2
   es_cb = EarlyStopping(monitor='loss',patience=100, verbose=0, mode='auto')
-  traindata = newdata[[int(np.random.randint(0,len(newdata))),int(np.random.randint(0,len(newdata))),int(np.random.randint(0,len(newdata)))]]
+  traindata = newdata[[int(np.random.randint(0,len(newdata))),int(np.random.randint(0,len(newdata)))]]
   answerdatas.append(traindata)
-  teacher = np.eye(3)
+  teacher = np.eye(2)
   layer = [Dense(100, input_dim=len(_data[0])),Activation("linear"),Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(100), Activation(act), Dropout(dropout), Dense(teacher.shape[1]), Activation("softmax")]
   NN = Sequential()
   for i in layer:
@@ -200,7 +200,7 @@ def network_new(_data):
       tempdata.append(newdata[i])
     else:
       _tempdata.append(newdata[i])
-  if(len(tempdata) == 0):
+  if(len(tempdata) < 2):
     return
   else:
     tempdata = np.array(tempdata)

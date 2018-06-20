@@ -6,7 +6,7 @@ int t = 0;
 
 void setup() {
   size(800, 800);
-  loadcsv(0);
+  loadcsv(1);
 }
 
 void loadcsv(int num) {
