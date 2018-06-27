@@ -30,11 +30,6 @@ def analyze():
         stone_info.append(i[t])
         stone_info.append(i[t+1])
         stone_info.append(i[t+2])
-        stone_info.append(i[t]**2)
-        stone_info.append(i[t+1]**2)
-        stone_info.append(i[t] * i[t+1])
-        stone_info.append(math.sin(i[t]))
-        stone_info.append(math.sin(i[t+1]))
         stone_num += 1
     if stone_num != 0:
       field_stone_info[stone_num-1].append(stone_info)
