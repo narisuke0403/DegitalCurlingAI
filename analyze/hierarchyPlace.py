@@ -45,9 +45,9 @@ def plot(data):
     for t in range(0,len(i),3):
       if i[t]+i[t+1] != 0:
         r = math.atan2(i[t+1]-4.88,i[t]-2.375)/math.pi * 180
-        l = math.sqrt(i[t] ** 2 + i[t+1] ** 2)
+        l = math.sqrt((i[t+1]-4.88) ** 2 + (i[t]-2.375) ** 2)
         x_li.append(r)
-        y_li.append(i[t+1])
+        y_li.append(l)
 
 def thresshold(x):
   return 3 ** x
