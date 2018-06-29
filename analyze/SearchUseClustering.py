@@ -49,3 +49,8 @@ def clustering(x):
     if pred.tolist().count(i) != 0:
       t += 1
   print(t)
+
+def main():
+  num = 0
+  init(num)
+  clustering(data[num])
