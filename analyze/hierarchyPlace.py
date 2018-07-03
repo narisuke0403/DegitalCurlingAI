@@ -1,6 +1,8 @@
 import os,csv,copy,shutil,concurrent.futures,numpy as np,math
-x_li = []
-y_li = []
+r_li = []
+a_li = []
+c_li = []
+node_li = []
 All_Node = []
 
 class Node:
@@ -28,54 +30,84 @@ class Node:
     All_Node.append(self.child4)
     self.haschiled = True
 
+#データ読み込み
 def init():
   data = np.loadtxt("../Log/csv/log.csv",delimiter=",")
   return data
 
+#極座標に変換
 def plot(data):
   for i in data:
     for t in range(0,len(i),3):
       if i[t]+i[t+1] != 0:
         r = math.atan2(i[t+1]-4.88,i[t]-2.375)/math.pi * 180
-        l = math.sqrt((i[t+1]-4.88) ** 2 + (i[t]-2.375) ** 2)
-        x_li.append(r)
-        y_li.append(l)
+        a = math.sqrt((i[t+1]-4.88) ** 2 + (i[t]-2.375) ** 2)
+        r_li.append(r)
+        a_li.append(a)
+        c_li.append(i[t+2])
 
+#閾値の設定
 def thresshold(x):
   return 3 ** x
 
-def search(a,r, node):
+#木構造の生成
+def maketree(a,r, node):
   if node.haschiled:
     if node.child1.minA <= a and node.child1.maxA > a and node.child1.minR <= r and node.child1.maxR > r:
-      search(a,r,node.child1)
+      maketree(a,r,node.child1)
     elif node.child2.minA <= a and node.child2.maxA > a and node.child2.minR <= r and node.child2.maxR > r:
-      search(a,r,node.child2)
+      maketree(a,r,node.child2)
     elif node.child3.minA <= a and node.child3.maxA > a and node.child3.minR <= r and node.child3.maxR > r:
-      search(a,r,node.child3)
+      maketree(a,r,node.child3)
     else:
-      search(a,r,node.child4)
+      maketree(a,r,node.child4)
   else:
     node.count += 1
     if node.count > thresshold(node.rank):
       node.createchildren()
     return
-  
-def main():
-  plot(init())
-  root = Node(0,360,0,11,0)
-  for i,_ in enumerate(x_li):
-    search(x_li[i],y_li[i],root)
-  A1 = [All_Node[i].minA for i in range(len(All_Node)) if All_Node[i].haschiled == False]
-  A2 = [All_Node[i].maxA for i in range(len(All_Node)) if All_Node[i].haschiled == False]
-  R1 = [All_Node[i].minR for i in range(len(All_Node)) if All_Node[i].haschiled == False]
-  R2 = [All_Node[i].maxR for i in range(len(All_Node)) if All_Node[i].haschiled == False]
 
+#木構造から検索
+def search(a,r,node):
+  if node.haschiled:
+    if node.child1.minA <= a and node.child1.maxA > a and node.child1.minR <= r and node.child1.maxR > r:
+      tmp = search(a, r, node.child1)
+    elif node.child2.minA <= a and node.child2.maxA > a and node.child2.minR <= r and node.child2.maxR > r:
+      tmp = search(a, r, node.child2)
+    elif node.child3.minA <= a and node.child3.maxA > a and node.child3.minR <= r and node.child3.maxR > r:
+      tmp = search(a, r, node.child3)
+    else:
+      tmp = search(a, r, node.child4)
+  else:
+    return node
+  return tmp
+        
+
+def main():
+  data = init()
+  plot(data)
+  root = Node(-180,180,0,11,0)
+  for i,_ in enumerate(r_li):
+    maketree(r_li[i],a_li[i],root)
+  NoHasChildList = [All_Node[i] for i in range(len(All_Node)) if All_Node[i].haschiled == False]
+  for i in data:
+    for t in range(0, len(i), 3):
+      if i[t]+i[t+1] != 0:
+        r = math.atan2(i[t+1]-4.88, i[t]-2.375)/math.pi * 180
+        a = math.sqrt((i[t+1]-4.88) ** 2 + (i[t]-2.375) ** 2)
+        k = NoHasChildList.index(search(r, a, root))
+  A1 = [NoHasChildList[i].minA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
+  A2 = [NoHasChildList[i].maxA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
+  R1 = [NoHasChildList[i].minR for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
+  R2 = [NoHasChildList[i].maxR for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
+
+  """
   with open("out.csv","w") as f:
     writer = csv.writer(f,lineterminator='\n')
     writer.writerow(A1)
     writer.writerow(A2)
     writer.writerow(R1)
     writer.writerow(R2)
-
+"""
 if __name__ == '__main__':
     main()
