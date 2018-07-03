@@ -90,12 +90,19 @@ def main():
   for i,_ in enumerate(r_li):
     maketree(r_li[i],a_li[i],root)
   NoHasChildList = [All_Node[i] for i in range(len(All_Node)) if All_Node[i].haschiled == False]
-  for i in data:
-    for t in range(0, len(i), 3):
-      if i[t]+i[t+1] != 0:
-        r = math.atan2(i[t+1]-4.88, i[t]-2.375)/math.pi * 180
-        a = math.sqrt((i[t+1]-4.88) ** 2 + (i[t]-2.375) ** 2)
+  binaridata = np.zeros((len(NoHasChildList)*2,len(data))).T
+  #binaridata = np.zeros((len(NoHasChildList)*2,100)).T
+  for i,minidata in enumerate(data):
+    for t in range(0, len(minidata), 3):
+      if minidata[t]+minidata[t+1] != 0:
+        r = math.atan2(minidata[t+1]-4.88, minidata[t]-2.375)/math.pi * 180
+        a = math.sqrt((minidata[t+1]-4.88) ** 2 + (minidata[t]-2.375) ** 2)
         k = NoHasChildList.index(search(r, a, root))
+        if(minidata[t+2]==0):
+          binaridata[i][k*2] = 1
+        else:
+          binaridata[i][k*2+1] = 1
+  np.savetxt("out1.csv",binaridata,fmt="%.2f")
   A1 = [NoHasChildList[i].minA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   A2 = [NoHasChildList[i].maxA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   R1 = [NoHasChildList[i].minR for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
