@@ -110,12 +110,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="divide.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Qlearning.cpp" />
     <ClCompile Include="strategy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CurlingSimulator.h" />
+    <ClInclude Include="divide.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="strategy.h" />
   </ItemGroup>
