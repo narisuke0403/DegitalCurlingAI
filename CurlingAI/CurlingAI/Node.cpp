@@ -9,6 +9,7 @@ extern int map[100][100];
 extern unordered_map<string, int> situation;
 GAMESTATE gameState[16];
 SHOTPOS shotPos[16];
+float shotPower[16];
 
 Node::Node(const GAMESTATE* const gs) {
 	gsNode	= new GAMESTATE(*gs);
@@ -45,9 +46,10 @@ GAMESTATE* playMontecarlo(const GAMESTATE* const gs) {
 	GAMESTATE *currGS = new GAMESTATE(*gs);
 	float pos[2];
 	for (int i = 0; i < situation.size(); i++) {
-		PolarToCartesian(1, pos);
+		PolarToCartesian(i, pos);
 		float posX = pos[0];
 		float posY = pos[1];
+
 	}
 	return currGS;
 }
@@ -55,8 +57,10 @@ GAMESTATE* playMontecarlo(const GAMESTATE* const gs) {
 void saveGameState(const GAMESTATE* const gs) {
 	gameState[gs->ShotNum] = GAMESTATE(*gs);
 }
-void saveShotPos(const GAMESTATE* const gs,const SHOTPOS* pos) {
+void saveShotAndStateAndPower(const GAMESTATE* const gs, SHOTPOS *pos,float power) {
+	gameState[gs->ShotNum] = GAMESTATE(*gs);
 	shotPos[gs->ShotNum] = SHOTPOS(*pos);
+	shotPower[gs->ShotNum] = power;
 }
 void initState() {
 	cout << "a";
@@ -72,8 +76,13 @@ void initState() {
 void initPos() {
 	for (int i = 0; i < 16; i++) {
 		shotPos[i].angle = 0;
-		shotPos[i].x = 0;
-		shotPos[i].y = 0;
+		shotPos[i].x = 0.0;
+		shotPos[i].y = 0.0;
+	}
+}
+void initPower() {
+	for (int i = 0; i < 16; i++) {
+		shotPower[i] = 0;
 	}
 }
 
@@ -111,7 +120,7 @@ bool GetContents(const string& filename, vector<vector<string>>& table, const ch
 
 	return true;
 }
-void prints() {
+void outLogs() {
 	ofstream logging;
 	string filename = "StateLog.csv";
 	vector<vector<string>> table;
@@ -129,7 +138,14 @@ void prints() {
 		logging << gameState[i].LastEnd << ",";
 		logging << gameState[i].CurEnd << ",";
 		logging << gameState[i].ShotNum << ",";
-		logging << gameState[i].WhiteToMove << endl;
+		logging << gameState[i].WhiteToMove << ",";
+		if (shotPos[i].x + shotPos[i].y != 0) {
+			logging << shotPos[i].x << ",";
+			logging << shotPos[i].y << ",";
+			logging << shotPos[i].angle << ",";
+			logging << shotPower[i] << endl;
+		}
+		else logging << endl;
 	}
 	logging.close();
 }

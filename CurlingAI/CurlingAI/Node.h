@@ -22,6 +22,7 @@ public:
 
 GAMESTATE* playMontecarlo(const GAMESTATE* const gs);
 void saveGameState(const GAMESTATE* const gs);
+void saveShotAndStateAndPower(const GAMESTATE* const gs,SHOTPOS *pos,float power);
 void initState();
 void initPos();
-void prints();
+void outLogs();

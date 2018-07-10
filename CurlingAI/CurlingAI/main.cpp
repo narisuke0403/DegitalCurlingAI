@@ -12,7 +12,6 @@ SIMULATION_FUNC Simulation = nullptr;
 CREATESHOT_FUNC CreateShot = nullptr;
 CREATEHITSHOT_FUNC CreateHitShot = nullptr;
 GETSCORE_FUNC GetScore = nullptr;
-int kobayashi_count = 0;
 
 //! initialize GAMESTATE
 void initGameState(GAMESTATE *pgs) {
@@ -189,6 +188,18 @@ bool processCommand(char *command)
 		// get a Shot by getBestShot (defined in 'strategy.cpp')
 		getBestShot(&GameState, &vec);
 		shot = vec;
+		SHOTPOS pos;
+		pos.x = 0;
+		pos.y = 0;
+		pos.angle = 0;
+		float power = 10;//from 0 to 16
+		//pos,power‚ÍQ’l‚É‚æ‚Á‚ÄŒˆ’è
+		CreateHitShot(pos, power, &vec);
+		saveShotAndStateAndPower(&GameState, &pos, power);
+		/*
+		
+		*/
+
 
 		/*
 		int stone_num[16];
@@ -211,7 +222,7 @@ bool processCommand(char *command)
 			return false;
 		}
 		GameState.Score[GameState.CurEnd] = atoi(buffer);
-		prints();
+		outLogs();
 	}
 
 	return true;
@@ -220,15 +231,7 @@ bool processCommand(char *command)
 
 int main()
 {
-	/*
-	cout << "hello" << endl;
-	float p[2];
-	PolarToCartesian(1, p);
-	cout << "how are you" << endl;
-	for (int i = 0; i < 100; i++) {
-		cout << p[0] << p[1] << endl;
-	}
-	*/
+
 	char message[BUFSIZE];
 	// load CurlingSimulator.dll
 	if (!LoadFunction()) {
@@ -239,14 +242,9 @@ int main()
 	// process command
 	int count = 0;
 	while (1) {
-		//cout << "aaa";
 		memset(message, 0x00, sizeof(message));
-		//cout << "bbb";
 		recvCommand(message, sizeof(message));
-		//cout << message;
 		processCommand(message);
-		//cout << "ddd";
-		//prints();
 
 	}
 
