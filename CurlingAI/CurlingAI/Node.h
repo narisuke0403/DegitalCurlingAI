@@ -1,5 +1,4 @@
-#ifndef NODE_H
-#define NODE_H
+#pragma once
 #include <stdio.h>
 #include <iostream>
 #include "main.h"
@@ -22,5 +21,7 @@ public:
 };
 
 GAMESTATE* playMontecarlo(const GAMESTATE* const gs);
-
-#endif
+void saveGameState(const GAMESTATE* const gs);
+void initState();
+void initPos();
+void prints();
