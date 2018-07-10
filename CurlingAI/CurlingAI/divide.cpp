@@ -6,6 +6,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <unordered_map>
+#include <iostream>
+#include <iomanip>
 
 using namespace std;
 vector<string> min1, max1, min2, max2,RANK;
@@ -46,9 +48,31 @@ void divideCartesian() {
 	
 }
 
+void get_ranking(int *rank, int depth[16])
+{
+	// init array
+	for (int i = 0; i < 16; i++) {
+		rank[i] = i;
+	}
+	// sort
+	int tmp;
+	for (int i = 1; i < 16; i++) {
+		for (int j = i; j > 0; j--) {
+			if(depth[j] < depth[j-1]){
+			// swap
+				tmp = rank[j];
+				rank[j] = rank[j - 1];
+				rank[j - 1] = tmp;
+			}
+			else {
+				break;
+			}
+		}
+	}
+}
+
 //盤面を引数として、situationの番号を返す
 int searchPolar(const GAMESTATE* const gs) {
-	vector<int> 
 	float* a = new float[16];
 	float* r = new float[16];
 	bool* c = new bool[16];
@@ -57,16 +81,33 @@ int searchPolar(const GAMESTATE* const gs) {
 	float _y_center = 4.88;
 	string pos = "";
 	int count = 0;
-	for (int i = 0; i < 16; i++) {
-		
+	int RANK_rank[16];
+	int stone_num[16];
+	//ランクでソート
+	for (int i = 0; i < 16; i++) {	
 		if (gs->body[i][0] + gs->body[i][1] != 0) {
-			a[i] = atan2(gs->body[i][1] - _y_center, gs->body[i][0] - _x_center) / M_PI;
+			a[i] = atan2(gs->body[i][1] - _y_center, gs->body[i][0] - _x_center)*180 / M_PI;
 			r[i] = sqrt((gs->body[i][1] - _y_center)*(gs->body[i][1] - _y_center) + (gs->body[i][0] - _x_center)*(gs->body[i][0] - _x_center));
-			c[i] = gs->WhiteToMove;
+			if (i % 2 == 0) {
+				c[i] = true;
+			}
+			else {
+				c[i] = false;
+			}
 			for (int t = 0; t < min1.size(); t++) {
 				if (a[i] > stof(min1.at(t)) && a[i] < stof(max1.at(t)) && r[i] > stof(min2.at(t)) && r[i] < stof(max2.at(t))) {
-					pos += to_string(i);
+					RANK_rank[i] = stoi(RANK[t]);
 				}
+			}
+		}
+	}
+	for (int i = 0; i < 16; i++) {
+		get_ranking(stone_num, RANK_rank);
+		for (int t = 0; t < min1.size(); t++) {
+			if (a[stone_num[i]] > stof(min1.at(t)) && a[stone_num[i]] < stof(max1.at(t)) && r[stone_num[i]] > stof(min2.at(t)) && r[stone_num[i]] < stof(max2.at(t))) {
+				ostringstream sout;
+				sout << setfill("0") << setw(4) << t;
+				pos += sout.str()+to_string(int(c[stone_num[i]]));
 			}
 		}
 	}
