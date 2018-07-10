@@ -13,9 +13,6 @@ CREATESHOT_FUNC CreateShot = nullptr;
 CREATEHITSHOT_FUNC CreateHitShot = nullptr;
 GETSCORE_FUNC GetScore = nullptr;
 
-GAMESTATE situation[16];
-SHOTVEC action[16];
-
 //! initialize GAMESTATE
 void initGameState(GAMESTATE *pgs) {
 	memset(pgs->body, 0x00, sizeof(float) * 32);
@@ -131,16 +128,15 @@ bool processCommand(char *command)
 	if (!GetArgument(cmd, sizeof(cmd), command, 0)) {
 		return false;
 	}
-
 	// process command
 	if (_stricmp(cmd, "NEWGAME") == 0) {
 	}
 	else if (_stricmp(cmd, "ISREADY") == 0) {
 		// initialize GameState
 		initGameState(&GameState);
-		for (int i = 0; i < 16; i++) {
-			initGameState(&situation[i]);
-		}
+		printf("init");
+		initState();
+		initPos();
 		sendCommand("READYOK");
 	}
 	else if (_stricmp(cmd, "POSITION") == 0) {
@@ -185,70 +181,39 @@ bool processCommand(char *command)
 		else {
 			GameState.WhiteToMove = false;
 		}
-	}
-	else if (_stricmp(cmd, "GO") == 0) {
+		//save to monteQ
+		saveGameState(&GameState);
+	}else if (_stricmp(cmd, "GO") == 0) {
 		SHOTVEC vec;
-
 		// get a Shot by getBestShot (defined in 'strategy.cpp')
 		getBestShot(&GameState, &vec);
 		shot = vec;
-
+		SHOTPOS pos;
+		pos.x = 0;
+		pos.y = 0;
+		pos.angle = 0;
+		float power = 10;//from 0 to 16
+		//pos,powerはQ値によって決定
+		CreateHitShot(pos, power, &vec);
+		saveShotAndStateAndPower(&GameState, &pos, power);
 		/*
-		random shot
 		
-		srand((unsigned int)time(NULL));
-		selectRandomVecter(&GameState, &vec);
 		*/
 
-		//create tree to MonteCarlo
 
-		
-		//Tree* tree = new Tree(&GameState);
-		//srand((unsigned int)time(NULL));//reset random field
-		//tree->addRandomChildren(tree->root);
-		//tree->checkPointer(tree->root);
-		
+		/*
 		int stone_num[16];
 		get_ranking(stone_num, &GameState);
 		int rank = 0;
-		/*
 		stone_num[n]=x
 		n : the n th Stone from the center of House
 	    x : the x th Shot in this End (corresponding to the number of GAMESTATE->body[x])
 		*/
-		/*
-		if (CreateHitAndStayShot(&GameState, stone_num[rank], &vec)) {//target is the rank th　stone from the center
-			printf("HitANdStay->%d\n", stone_num[rank]);
-			sprintf_s(buffer, sizeof(char) * BUFSIZE, "BESTSHOT %f %f %d", vec.x, vec.y, vec.angle);
-		}*/
-		/*
-		if (CreateWickShot(&GameState, stone_num[rank], &vec)) {//target is the rank th　stone from the center
-			printf("WickShot->%d\n", stone_num[rank]);
-			sprintf_s(buffer, sizeof(char) * BUFSIZE, "BESTSHOT %f %f %d", vec.x, vec.y, vec.angle);
-		}
-		*/
-		/*
-		if (CreateFreezeShot(&GameState, stone_num[rank], &vec)) {//target is the rank th　stone from the center
-			printf("FreezeShot->%d\n", stone_num[rank]);
-			sprintf_s(buffer, sizeof(char) * BUFSIZE, "BESTSHOT %f %f %d", vec.x, vec.y, vec.angle);
-		}
-		*/
-		if(true){
-			// create BESTSHOT command
-			sprintf_s(buffer, sizeof(char) * BUFSIZE, "BESTSHOT %f %f %d", vec.x, vec.y, vec.angle);
-			/*for (int n = 0; n < 16; n++) {
-				tree->root->vecs[n] = new Vector(&GameState, stone_num[n]);
-				if (tree->root->vecs[n]->x != -2.375||tree->root->vecs[n]->y != -4.88) {
-					printf("ランク%dの角度は%lf度", n,angleFromCentor(tree->root->vecs[n]));
-				}
-			}
-			*/
-			
-		}
+		sprintf_s(buffer, sizeof(char) * BUFSIZE, "BESTSHOT %f %f %d", vec.x, vec.y, vec.angle);
 		//set my turn's situation and action
-		situation[GameState.CurEnd] = GameState;
-		action[GameState.CurEnd] = shot;
 		// send BESTSHOT command
+		//printf("saveGameState");
+		//saveGameState(&GameState);
 		sendCommand(buffer);
 	}
 	else if (_stricmp(cmd, "SCORE") == 0) {
@@ -257,6 +222,7 @@ bool processCommand(char *command)
 			return false;
 		}
 		GameState.Score[GameState.CurEnd] = atoi(buffer);
+		outLogs();
 	}
 
 	return true;
@@ -265,17 +231,7 @@ bool processCommand(char *command)
 
 int main()
 {
-	dividePolar();
-	cout << "hello" << endl;
-	float p[2];
-	PolarToCartesian(1, p);
-	cout << "how are you" << endl;
 
-	
-	for (int i = 0; i < 100; i++) {
-		cout << p[0] << "," << p[1] << endl;
-	}
-	
 	char message[BUFSIZE];
 	// load CurlingSimulator.dll
 	if (!LoadFunction()) {
@@ -289,6 +245,7 @@ int main()
 		memset(message, 0x00, sizeof(message));
 		recvCommand(message, sizeof(message));
 		processCommand(message);
+
 	}
 
 	return 0;
