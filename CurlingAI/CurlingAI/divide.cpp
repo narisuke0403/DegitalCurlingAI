@@ -107,7 +107,7 @@ int searchPolar(const GAMESTATE* const gs) {
 		for (int t = 0; t < min1.size(); t++) {
 			if (a[stone_num[i]] > stof(min1.at(t)) && a[stone_num[i]] < stof(max1.at(t)) && r[stone_num[i]] > stof(min2.at(t)) && r[stone_num[i]] < stof(max2.at(t))) {
 				ostringstream sout;
-				sout << setfill("0") << setw(4) << t;
+				sout << setfill('0') << setw(4) << t;
 				pos += sout.str()+to_string(int(c[stone_num[i]]));
 			}
 		}
