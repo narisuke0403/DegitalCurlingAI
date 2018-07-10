@@ -235,19 +235,6 @@ void selectRandomVecter(const GAMESTATE* const gs, SHOTVEC *vec) {
 
 }
 
-Tree::Tree(const GAMESTATE* const gs) {
-	root = new Node(gs,0);
-}
-
-Node::Node(const GAMESTATE* const gs,int d) {
-	gs_node= new GAMESTATE(*gs);
-	depth = d; 
-	for (int i = 0; i < 16; i++) {
-		vecs[i] =new Vector() ;
-	}
-}
-
-
 Vector::Vector() {}
 Vector::Vector(const GAMESTATE* const gs, int rank) {
 	x = gs->body[rank][0] - 2.375;//distance from (0,0)
@@ -278,38 +265,6 @@ double angleFromCentor(Vector* v1) {
 	double PI = 3.141592653589793;
 	//return atan2(v1->y, v1->x) //radian
 	return 180*(atan2(v1->y,v1->x))/PI;//degree
-}
-
-void Tree::addRandomChildren(Node* curr) {
-	SHOTVEC vec;
-	if (curr->depth < 2) {
-		if (curr->child.size() < 10) {//add Parallels children to curr
-			//printf("%d\n", curr->child.size());
-			Node *copyNode = new Node(curr->gs_node,curr->depth+1);
-			selectRandomVecter(copyNode->gs_node, &vec);
-			Simulation(copyNode->gs_node, vec, 0.30f, NULL, -1);//to simulate
-			curr->child.push_back(copyNode);//add child
-			addRandomChildren(curr);//recursive
-		}
-		for (int i = 0; i < (int)curr->child.size(); i++) {//add next child to Paralells children
-			Node *copyNode = new Node(curr->child.at(i)->gs_node, curr->child.at(i)->depth + 1);
-			selectRandomVecter(copyNode->gs_node, &vec);
-			Simulation(copyNode->gs_node, vec, 0.30f, NULL, -1);//to simulate
-			curr->child.at(i)->child.push_back(copyNode);//add child
-			addRandomChildren(curr->child.at(i));//recursive
-		}
-		return;
-	}
-	return;
-}
-
-void Tree::checkPointer(Node *curr) {//check Nodes not to be null
-	for (int i = 0; i < (int)curr->child.size(); i++) {
-		printf("%p\n", &curr->child.at(i));
-		for (int j = 0; j < (int)curr->child.at(i)->child.size(); j++) {
-			printf("%p\n", &curr->child.at(i)->child.at(j));
-		}
-	}
 }
 
 //remove opponent's stone and stay my stone 
@@ -412,3 +367,17 @@ bool CreateFreezeShot(const GAMESTATE* const gs, int stone, SHOTVEC* vec_ret) {
 	return false;
 
 }
+
+Montecarlo::Montecarlo(const GAMESTATE* _gs, int _sc, const SHOTVEC _vec[], const float _weight[], const int _better[]) {
+	gs = _gs;
+	shotCount = _sc;
+	for (int i = 0; i < shotCount; i++) {
+		vec[i].x = _vec[i].x;
+		vec[i].y = _vec[i].y;
+		vec[i].angle = _vec[i].angle;
+		estimate[i] = 0.0;
+		weight[i] = _weight[i];
+		better[i] = _better[i];
+	}
+	timeLimit = 108000;
+};

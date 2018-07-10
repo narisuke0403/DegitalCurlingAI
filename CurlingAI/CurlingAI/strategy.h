@@ -1,7 +1,9 @@
-#pragma once
+#ifndef STRATEGY_H
+#define STRATEGY_H
 
 #include "main.h"
 #include <vector>//ArrayList‚Æ“¯‚¶
+#include <thread>
 
 /*** constant numbers ***/
 static const float RANDOM = (float)0.145;  // sigma of normal random number
@@ -37,23 +39,6 @@ public:
 	Vector(const GAMESTATE* const gs, int num);
 	Vector();
 };
-
-class Node {
-public:
-	int depth;
-	GAMESTATE* gs_node;
-	std::vector<Node*> child;//“®“I”z—ñ
-	Vector* vecs[16];
-	Node(const GAMESTATE* const gs,int depth);
-};
-
-class Tree {
-public:
-	Node * root;
-	Tree(const GAMESTATE* const gs);
-	void addRandomChildren(Node* curr);
-	void checkPointer(Node *root);
-};
 bool CreateHitAndStayShot(const GAMESTATE* const gs, int stone, SHOTVEC* vec_ret);
 bool CreateWickShot(const GAMESTATE* const gs, int stone, SHOTVEC* vec_ret);
 bool CreateFreezeShot(const GAMESTATE* const gs, int stone, SHOTVEC* vec_ret);
@@ -64,3 +49,20 @@ double vec_length(Vector* v);
 double innerProduct(Vector* v1, Vector* v2);
 //double angle(Vector* v1, Vector* v2);
 double angleFromCentor(Vector* v1);
+
+
+const int shotVariations = 100;
+class Montecarlo {
+public:
+	const GAMESTATE* gs;
+	int shotCount;
+	SHOTVEC vec[shotVariations];
+	float estimate[shotVariations];
+	float weight[shotVariations];
+	int better[shotVariations];
+	clock_t timeLimit;
+	Montecarlo(const GAMESTATE* _gs, int _sc, const SHOTVEC _vec[], const float _weight[], const int _better[]);
+};
+
+
+#endif

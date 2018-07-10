@@ -13,6 +13,8 @@
 
 #include "CurlingSimulator.h"
 #include "strategy.h"
+#include "divide.h"
+#include "Node.h"
 
 extern HMODULE hCSDLL;
 

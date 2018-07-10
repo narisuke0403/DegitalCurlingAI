@@ -201,8 +201,9 @@ bool processCommand(char *command)
 		*/
 
 		//create tree to MonteCarlo
+
 		
-		Tree* tree = new Tree(&GameState);
+		//Tree* tree = new Tree(&GameState);
 		//srand((unsigned int)time(NULL));//reset random field
 		//tree->addRandomChildren(tree->root);
 		//tree->checkPointer(tree->root);
@@ -235,12 +236,13 @@ bool processCommand(char *command)
 		if(true){
 			// create BESTSHOT command
 			sprintf_s(buffer, sizeof(char) * BUFSIZE, "BESTSHOT %f %f %d", vec.x, vec.y, vec.angle);
-			for (int n = 0; n < 16; n++) {
+			/*for (int n = 0; n < 16; n++) {
 				tree->root->vecs[n] = new Vector(&GameState, stone_num[n]);
 				if (tree->root->vecs[n]->x != -2.375||tree->root->vecs[n]->y != -4.88) {
 					printf("ƒ‰ƒ“ƒN%d‚ÌŠp“x‚Í%lf“x", n,angleFromCentor(tree->root->vecs[n]));
 				}
 			}
+			*/
 			
 		}
 		//set my turn's situation and action
@@ -263,6 +265,13 @@ bool processCommand(char *command)
 
 int main()
 {
+	cout << "hello" << endl;
+	float p[2];
+	PolarToCartesian(1, p);
+	cout << "how are you" << endl;
+	for (int i = 0; i < 100; i++) {
+		cout << p[0] << p[1] << endl;
+	}
 	char message[BUFSIZE];
 	// load CurlingSimulator.dll
 	if (!LoadFunction()) {
