@@ -14,32 +14,44 @@ vector<string> min1, max1, min2, max2,RANK;
 int map[100][100];
 unordered_map<string, int> situation;
 
+vector<string> split(string& input, char delimiter)
+{
+	istringstream stream(input);
+	string field;
+	vector<string> result;
+	while (getline(stream, field, delimiter)) {
+		result.push_back(field);
+	}
+	return result;
+}
+
 //最初に一度呼んで離散化させておく関数
 //ファイルから数値を読み込むため、一度だけ呼ぶこと
 void dividePolar() {
-	string input = "out.csv";
-	istringstream stream(input);
-	string field;
-	
+	ifstream ifs("out.csv");
+	string line;
 	int i = 0;
-	while (getline(stream, field)) {
+	while (getline(ifs, line)) {
+		vector<string> strvec =split(line, ',');
 		if (i == 0) {
-			min1.push_back(field);
+			min1 = strvec;
 			i++;
 		}
 		else if (i == 1) {
-			max1.push_back(field);
+			max1 = strvec;
 			i++;
 		}
 		else if (i == 2) {
-			min2.push_back(field);
+			min2 = strvec;
 			i++;
 		}
-		else if(i == 3) {
-			max2.push_back(field);
+		else if (i == 3) {
+			max2 = strvec;
+			i++;
 		}
 		else {
-			RANK.push_back(field);
+			RANK = strvec;
+			i++;
 		}
 	}
 }
