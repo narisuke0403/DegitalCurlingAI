@@ -8,7 +8,8 @@
 #include <unordered_map>
 
 using namespace std;
-vector<string> min1, max1, min2, max2;
+vector<string> min1, max1, min2, max2,RANK;
+int map[100][100];
 unordered_map<string, int> situation;
 
 //Å‰‚Éˆê“xŒÄ‚ñ‚Å—£U‰»‚³‚¹‚Ä‚¨‚­ŠÖ”
@@ -32,8 +33,11 @@ void dividePolar() {
 			min2.push_back(field);
 			i++;
 		}
-		else {
+		else if(i == 3) {
 			max2.push_back(field);
+		}
+		else {
+			RANK.push_back(field);
 		}
 	}
 }
@@ -44,6 +48,7 @@ void divideCartesian() {
 
 //”Õ–Ê‚ğˆø”‚Æ‚µ‚ÄAsituation‚Ì”Ô†‚ğ•Ô‚·
 int searchPolar(const GAMESTATE* const gs) {
+	vector<int> 
 	float* a = new float[16];
 	float* r = new float[16];
 	bool* c = new bool[16];
@@ -51,7 +56,9 @@ int searchPolar(const GAMESTATE* const gs) {
 	float _x_center = 2.375;
 	float _y_center = 4.88;
 	string pos = "";
+	int count = 0;
 	for (int i = 0; i < 16; i++) {
+		
 		if (gs->body[i][0] + gs->body[i][1] != 0) {
 			a[i] = atan2(gs->body[i][1] - _y_center, gs->body[i][0] - _x_center) / M_PI;
 			r[i] = sqrt((gs->body[i][1] - _y_center)*(gs->body[i][1] - _y_center) + (gs->body[i][0] - _x_center)*(gs->body[i][0] - _x_center));

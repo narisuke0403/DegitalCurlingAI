@@ -46,6 +46,8 @@ def plot(data):
         a_li.append(a)
         c_li.append(i[t+2])
 
+
+
 #閾値の設定
 def thresshold(x):
   return 3 ** x
@@ -98,24 +100,28 @@ def main():
         r = math.atan2(minidata[t+1]-4.88, minidata[t]-2.375)/math.pi * 180
         a = math.sqrt((minidata[t+1]-4.88) ** 2 + (minidata[t]-2.375) ** 2)
         k = NoHasChildList.index(search(r, a, root))
+        """
         if(minidata[t+2]==0):
           binaridata[i][k*2] = 1
         else:
           binaridata[i][k*2+1] = 1
+        """
   #np.savetxt("out1.csv",binaridata,fmt="%.2f")
   A1 = [NoHasChildList[i].minA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   A2 = [NoHasChildList[i].maxA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   R1 = [NoHasChildList[i].minR for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   R2 = [NoHasChildList[i].maxR for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
+  RANK = [NoHasChildList[i].rank for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
+
 
   print(len(A1))
-  """
   with open("out.csv","w") as f:
     writer = csv.writer(f,lineterminator='\n')
     writer.writerow(A1)
     writer.writerow(A2)
     writer.writerow(R1)
     writer.writerow(R2)
-"""
+    writer.writerow(RANK)
+
 if __name__ == '__main__':
     main()
