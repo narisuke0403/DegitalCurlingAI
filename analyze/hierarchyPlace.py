@@ -102,12 +102,13 @@ def main():
           binaridata[i][k*2] = 1
         else:
           binaridata[i][k*2+1] = 1
-  np.savetxt("out1.csv",binaridata,fmt="%.2f")
+  #np.savetxt("out1.csv",binaridata,fmt="%.2f")
   A1 = [NoHasChildList[i].minA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   A2 = [NoHasChildList[i].maxA for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   R1 = [NoHasChildList[i].minR for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
   R2 = [NoHasChildList[i].maxR for i in range(len(NoHasChildList)) if NoHasChildList[i].haschiled == False]
 
+  print(len(A1))
   """
   with open("out.csv","w") as f:
     writer = csv.writer(f,lineterminator='\n')

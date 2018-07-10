@@ -4,5 +4,6 @@
 #include "strategy.h"
 void dividePolar();
 void divideCartesian();
-void searchPolar();
+int searchPolar(const GAMESTATE* const gs);
 void searchCartesian();
+
