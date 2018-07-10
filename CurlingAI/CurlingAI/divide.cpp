@@ -48,6 +48,7 @@ void divideCartesian() {
 	
 }
 
+//ê[Ç≥èáÇ…É\Å[Ég
 void get_ranking(int *rank, int depth[16])
 {
 	// init array
@@ -118,4 +119,17 @@ int searchPolar(const GAMESTATE* const gs) {
 }
 void searchCartesian() {
 
+}
+
+void PolarToCartesian(int number,float* pos) {
+	pos[0] = 0;
+	pos[1] = 0;
+	float min_XA = cos(stof(min1[number]) * M_PI / 180);
+	float max_XA = cos(stof(max1[number]) * M_PI / 180);
+	float min_YA = sin(stof(min1[number]) * M_PI / 180);
+	float max_YA = sin(stof(max1[number]) * M_PI / 180);
+	float x = (stof(min2[number]) * min_XA + stof(max2[number]) * max_XA) / 2;
+	float y = (stof(min2[number]) * min_YA + stof(max2[number]) * max_YA) / 2;
+	pos[0] = x;
+	pos[1] = y;
 }
