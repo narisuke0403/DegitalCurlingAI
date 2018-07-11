@@ -134,9 +134,9 @@ bool processCommand(char *command)
 	else if (_stricmp(cmd, "ISREADY") == 0) {
 		// initialize GameState
 		initGameState(&GameState);
-		printf("init");
-		initState();
-		initPos();
+		cerr << "init";
+		//initState();
+		//initPos();
 		sendCommand("READYOK");
 	}
 	else if (_stricmp(cmd, "POSITION") == 0) {
@@ -182,8 +182,9 @@ bool processCommand(char *command)
 			GameState.WhiteToMove = false;
 		}
 		//save to monteQ
-		saveGameState(&GameState);
-	}else if (_stricmp(cmd, "GO") == 0) {
+		//saveGameState(&GameState);
+	}
+	else if (_stricmp(cmd, "GO") == 0) {
 		SHOTVEC vec;
 		// get a Shot by getBestShot (defined in 'strategy.cpp')
 		getBestShot(&GameState, &vec);
@@ -193,11 +194,11 @@ bool processCommand(char *command)
 		pos.y = 0;
 		pos.angle = 0;
 		float power = 10;//from 0 to 16
-		//pos,power‚ÍQ’l‚É‚æ‚Á‚ÄŒˆ’è
+						 //pos,power‚ÍQ’l‚É‚æ‚Á‚ÄŒˆ’è
 		CreateHitShot(pos, power, &vec);
-		saveShotAndStateAndPower(&GameState, &pos, power);
+		//saveShotAndStateAndPower(&GameState, &pos, power);
 		/*
-		
+
 		*/
 
 
@@ -207,7 +208,7 @@ bool processCommand(char *command)
 		int rank = 0;
 		stone_num[n]=x
 		n : the n th Stone from the center of House
-	    x : the x th Shot in this End (corresponding to the number of GAMESTATE->body[x])
+		x : the x th Shot in this End (corresponding to the number of GAMESTATE->body[x])
 		*/
 		sprintf_s(buffer, sizeof(char) * BUFSIZE, "BESTSHOT %f %f %d", vec.x, vec.y, vec.angle);
 		//set my turn's situation and action
@@ -222,7 +223,7 @@ bool processCommand(char *command)
 			return false;
 		}
 		GameState.Score[GameState.CurEnd] = atoi(buffer);
-		outLogs();
+		//	outLogs();
 	}
 
 	return true;
@@ -231,16 +232,7 @@ bool processCommand(char *command)
 
 int main()
 {
-	dividePolar();
-	cout << "hello" << endl;
-	float p[2];
-	PolarToCartesian(1, p);
-	cout << "how are you" << endl;
 
-
-	for (int i = 0; i < 100; i++) {
-		cout << p[0] << "," << p[1] << endl;
-	}
 	char message[BUFSIZE];
 	// load CurlingSimulator.dll
 	if (!LoadFunction()) {

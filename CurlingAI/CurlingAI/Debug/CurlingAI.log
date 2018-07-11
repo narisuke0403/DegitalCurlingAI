@@ -1,3 +1,28 @@
-﻿  main.cpp
-Node.obj : error LNK2001: 外部シンボル ""class std::unordered_map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int,struct std::hash<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,struct std::equal_to<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,int> > > situation" (?situation@@3V?$unordered_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HU?$hash@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@U?$equal_to@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@std@@@2@@std@@A)" は未解決です。
-C:\Users\sungw\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe : fatal error LNK1120: 1 件の未解決の外部参照
+﻿  divide.cpp
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(15): error C2040: 'situation': 'std::unordered_map<std::string,int,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>> *[16]' は 'std::unordered_map<std::string,int,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' と間接操作のレベルが異なります。
+          with
+          [
+              _Kty=std::string,
+              _Ty=int
+          ]
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(94): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(102): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(110): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(119): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(127): error C2088: '[': class に対して正しくありません。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(127): error C2228: '.at' の左側はクラス、構造体、共用体でなければなりません
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(128): error C2088: '[': class に対して正しくありません。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(128): error C2228: '.at' の左側はクラス、構造体、共用体でなければなりません
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(128): error C2228: '.size' の左側はクラス、構造体、共用体でなければなりません
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(130): error C2088: '[': class に対して正しくありません。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(130): error C2228: '.at' の左側はクラス、構造体、共用体でなければなりません
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(139): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(140): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(141): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(142): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  main.cpp
+  Node.cpp
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(20): error C3861: 'split': 識別子が見つかりませんでした
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(21): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(53): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  コードを生成中...
