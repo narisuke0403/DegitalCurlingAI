@@ -231,7 +231,16 @@ bool processCommand(char *command)
 
 int main()
 {
+	dividePolar();
+	cout << "hello" << endl;
+	float p[2];
+	PolarToCartesian(1, p);
+	cout << "how are you" << endl;
 
+
+	for (int i = 0; i < 100; i++) {
+		cout << p[0] << "," << p[1] << endl;
+	}
 	char message[BUFSIZE];
 	// load CurlingSimulator.dll
 	if (!LoadFunction()) {
