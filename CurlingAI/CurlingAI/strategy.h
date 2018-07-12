@@ -2,6 +2,7 @@
 #define STRATEGY_H
 
 #include "main.h"
+#include "Node.h"
 #include <vector>//ArrayList‚Æ“¯‚¶
 #include <thread>
 
@@ -63,6 +64,6 @@ public:
 	clock_t timeLimit;
 	Montecarlo(const GAMESTATE* _gs, int _sc, const SHOTVEC _vec[], const float _weight[], const int _better[]);
 };
-
+void playNode(const GAMESTATE* const gs, SHOTVEC *vec_ret);
 
 #endif

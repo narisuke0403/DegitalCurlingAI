@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <iomanip>
-vector<string> min1, max1, min2, max2,RANK;
+vector<string> min1, max1, min2, max2, RANK;
 int map[100][100];
 vector<unordered_map<string, int>> situation;
 
@@ -135,7 +135,7 @@ void searchCartesian() {
 
 }
 
-void PolarToCartesian(int number,float* pos) {
+void PolarToCartesian(int number, float* pos) {
 	pos[0] = 0;
 	pos[1] = 0;
 	float min_XA = cos(stof(min1[number]) * M_PI / 180);

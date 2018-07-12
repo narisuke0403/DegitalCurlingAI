@@ -1,18 +1,17 @@
 ﻿  Node.cpp
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(18): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(50): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-  Qlearning.cpp
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(24): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(72): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   divide.cpp
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(92): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(100): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(108): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(117): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(125): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(141): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(142): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(143): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(144): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(92): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(100): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(108): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(117): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(125): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(141): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(142): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(143): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(144): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
   main.cpp
   strategy.cpp
   コードを生成中...
-  CurlingAI.vcxproj -> C:\Users\sungw\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe
+  CurlingAI.vcxproj -> C:\Users\masat\Desktop\CurlingAI\Debug\CurlingAI.exe

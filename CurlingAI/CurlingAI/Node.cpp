@@ -12,21 +12,37 @@ Node::Node(const GAMESTATE* const gs) {
 void Node::loadQtable() {
 	ifstream ifs("Qtable.csv");
 	string line;
-	int count = 0;
+	bool isExist = false;
+	int size = 0;
 	while (getline(ifs, line)) {
+		int count = 0;
 		vector<string> stringvec = split(line, ',');
-		for (int i = 0; i < stringvec.size(); i++) {
-			Qtable[count] = stof(stringvec.at(i));
-			count++;
+		size = stringvec.size();
+		//0=turn,1=KEY, 2~Qtable
+		KEY = stoi(stringvec.at(1));
+		if (stoi(stringvec.at(0)) == gsNode->ShotNum&&KEY==searchPolar(gsNode)) {
+			for (int i = 2; i < stringvec.size(); i++) {
+				cerr << count << endl;
+				Qtable[count] = stof(stringvec.at(i));
+				count++;
+			}
+			isExist = true;
+		}
+	}
+	if (!isExist) {
+		for (int i = 0; i < size; i++) {
+			Qtable[i] = 0;
 		}
 	}
 }
 
-void Node::through() {
+
+void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	float max = -100;
 	int indexP = 0;
 	int indexS = 0;
 	int angle = 0;
+	cerr << "now throwAndAddNode1" << endl;
 	for (int p = 0; p < shotVariation; p++) {//find highest value and its index
 		for (int s = 0; s < stateNum; s++) {
 			for (int a = 0; a < 2; a++) {
@@ -39,27 +55,98 @@ void Node::through() {
 			}
 		}
 	}
+	cerr << "now throwAndAddNode2" << endl;
 	float pos[2];
 	SHOTPOS shot;
-	SHOTVEC vec;
-	PolarToCartesian((indexP * 16 + indexS) + angle, pos);
+	pos[0] = 5;
+	pos[1] = 5;
+	cerr << "p,s,a" << endl;
+	cerr << indexP << indexS << angle << endl;
+	cerr << (indexP * 16 + indexS) * 2 + angle << endl;
+	PolarToCartesian((indexP * 16 + indexS)*2 + angle, pos);
 	shot.x = pos[0];
 	shot.y = pos[1];
 	shot.angle = angle;
+	cerr << "now throwAndAddNode3" << endl;
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
-	CreateHitShot(shot, indexP, &vec);
-	Simulation(nextGs, vec, 0.3f, NULL, -1);
+	CreateHitShot(shot, indexP, vec);
+	Simulation(nextGs, *vec, 0.3f, NULL, -1);
 	int number = searchPolar(nextGs);
-	//std::unordered_map<std::string, int> currState
-	//= /*hoge.at(nextGs->ShotNum)*/;
-	//auto itr = currState.find(number);        // "xyz" が設定されているか？
-	//if (itr != mp.end()) {
+	//int number = 1;
+	string num = to_string(number);
+	std::unordered_map<std::string, int> currState;
+	cerr << "hoge";
+	currState = situation.at(gsNode->ShotNum);
+	cerr << "now throwAndAddNode4" << endl;
+	auto itr = currState.find(num);        // string(number) が設定されているか？
+	next = new Node(nextGs);
+	//投げてそのノードに移動するために代入
+	if (itr != currState.end()) {
 		//設定されている場合の処理
-	//}
-	//else {
+	}
+	else {
 		//設定されていない場合の処理
-//	}
+		//ノードを追加
+		situation.at(gsNode->ShotNum).at(num) = situation.at(gsNode->ShotNum).size() + 1;
+	}
+}
 
+
+//use for Logging
+bool GetContents(const string& filename, vector<vector<string>>& table, const char delimiter = ',')
+{
+	// ファイルを開く
+	fstream filestream(filename);
+	if (!filestream.is_open())
+	{
+		// ファイルが開けなかった場合は終了する
+		return false;
+	}
+
+	// ファイルを読み込む
+	while (!filestream.eof())
+	{
+		// １行読み込む
+		string buffer;
+		filestream >> buffer;
+
+		// ファイルから読み込んだ１行の文字列を区切り文字で分けてリストに追加する
+		vector<string> record;              // １行分の文字列のリスト
+		istringstream streambuffer(buffer); // 文字列ストリーム
+		string token;                       // １セル分の文字列
+		while (getline(streambuffer, token, delimiter))
+		{
+			// １セル分の文字列をリストに追加する
+			record.push_back(token);
+		}
+
+		// １行分の文字列を出力引数のリストに追加する
+		table.push_back(record);
+	}
+
+	return true;
+}
+
+void Node::saveNode() {
+	ofstream logging;
+	string filename = "nodeLog.csv";
+	vector<vector<string>> table;
+	bool status = false;
+	status = status = GetContents(filename, table);
+	logging.open("nodeLog.csv", ios::app);
+	logging << gsNode->ShotNum <<",";
+	logging << KEY << ",";
+	for (int p = 0; p < shotVariation; p++) {//find highest value and its index
+		for (int s = 0; s < stateNum; s++) {
+			for (int a = 0; a < 2; a++) {
+				logging << Qtable[(p * 16 + s) * 2 + a];
+				if (!(p == shotVariation - 1 && s == stateNum - 1 && a == 1)) {
+					logging << ",";
+				}
+			}
+		}
+	}
+	logging.close();
 }
 
 
@@ -190,42 +277,8 @@ shotPower[i] = 0;
 }
 }
 */
-/*
-/*
-//use for Logging
-bool GetContents(const string& filename, vector<vector<string>>& table, const char delimiter = ',')
-{
-	// ファイルを開く
-	fstream filestream(filename);
-	if (!filestream.is_open())
-	{
-		// ファイルが開けなかった場合は終了する
-		return false;
-	}
 
-	// ファイルを読み込む
-	while (!filestream.eof())
-	{
-		// １行読み込む
-		string buffer;
-		filestream >> buffer;
 
-		// ファイルから読み込んだ１行の文字列を区切り文字で分けてリストに追加する
-		vector<string> record;              // １行分の文字列のリスト
-		istringstream streambuffer(buffer); // 文字列ストリーム
-		string token;                       // １セル分の文字列
-		while (getline(streambuffer, token, delimiter))
-		{
-			// １セル分の文字列をリストに追加する
-			record.push_back(token);
-		}
-
-		// １行分の文字列を出力引数のリストに追加する
-		table.push_back(record);
-	}
-
-	return true;
-}
 /*
 void outLogs() {
 ofstream logging;

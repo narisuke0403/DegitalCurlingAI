@@ -15,14 +15,15 @@ public:
 	GAMESTATE * gsNode;
 	Node *parent;
 	double eval;
-	int depth;
+	int KEY;
 	float Qtable[stateNum*shotVariation * 2];
 	std::vector<std::vector<std::string> > states;
 	std::vector<Node*> children;
 
 	Node(const GAMESTATE* const gs);
 	void loadQtable();
-	void through();
+	void throwAndAddNode(SHOTVEC *vec, Node *next);
+	void saveNode();
 };
 /*
 void saveGameState(const GAMESTATE* const gs);

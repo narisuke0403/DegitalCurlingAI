@@ -93,7 +93,7 @@ void CreateTakeoutShot(const GAMESTATE* const gs, unsigned int num_target, SHOTV
 
 			// check objective stone was in House or not
 			// NOTE: 'Simulation' rewites gstmp as a state after the simulation
-			if ( !is_in_House(gstmp->body[num_target][0], gstmp->body[num_target][1])) {
+			if (!is_in_House(gstmp->body[num_target][0], gstmp->body[num_target][1])) {
 				count[j]++;
 			}
 		}
@@ -116,7 +116,7 @@ void CreateTakeoutShot(const GAMESTATE* const gs, unsigned int num_target, SHOTV
 	cerr << "best_num = " << best_num << endl;
 
 	memcpy_s(vec_ret, sizeof(SHOTVEC), &(vec[best_num]), sizeof(SHOTVEC));
-	
+
 }
 
 //! choose best Shot
@@ -127,8 +127,7 @@ void CreateTakeoutShot(const GAMESTATE* const gs, unsigned int num_target, SHOTV
 //      - IF No.1 Stone is my Stone.
 //    3.Tee Shot: put a Stone on center of House
 //      - IF there is no Stone in House
-void getBestShot(const GAMESTATE* const gs, SHOTVEC *vec_ret)
-{
+void throwSample(const GAMESTATE* const gs, SHOTVEC *vec_ret) {
 	SHOTPOS pos;
 	// ranking of Shot number
 	// rank[n] = x;
@@ -199,8 +198,21 @@ void getBestShot(const GAMESTATE* const gs, SHOTVEC *vec_ret)
 	*/
 }
 
+void throwNode(const GAMESTATE* const gs, SHOTVEC *vec_ret) {
+	Node *curr = new Node(gs);
+	Node *next = new Node(gs);
+	curr->throwAndAddNode(vec_ret, next);
+}
+
+void getBestShot(const GAMESTATE* const gs, SHOTVEC *vec_ret)
+{
+	//throwSample(gs,vec_ret);
+	throwNode(gs, vec_ret);
+
+}
+
 //get the score
-int getScore(const GAMESTATE* const gs,int num) {
+int getScore(const GAMESTATE* const gs, int num) {
 	int score[2];
 	score[0] = 0;//score of 1st player 
 	score[1] = 0;//score of 2nd player
@@ -208,28 +220,28 @@ int getScore(const GAMESTATE* const gs,int num) {
 		if (gs->Score[i] < 0) {
 			score[0] += gs->Score[i];
 		}
-		else if(gs->Score[i]>0){
+		else if (gs->Score[i]>0) {
 			score[1] += gs->Score[i];
 		}
 		else {
-			
+
 		}
-	}   
+	}
 	return score[num];
 }
 
 
 //make random shot
 void selectRandomVecter(const GAMESTATE* const gs, SHOTVEC *vec) {
-	SHOTPOS pos; 
+	SHOTPOS pos;
 	for (int i = 0; i < 5; i++) {
 		rand();
 	}
-	pos.x = (float)( ((float)rand() / 32768.0) * 4.75); //from 0 to 4.75
+	pos.x = (float)(((float)rand() / 32768.0) * 4.75); //from 0 to 4.75
 	pos.y = (float)(((float)rand() / 32768.0) * 11.28); //from 0 to 11.28
-	pos.angle = ((int)rand())%2;//0 or 1
+	pos.angle = ((int)rand()) % 2;//0 or 1
 
-	//printf("%s%d%s%f%s%f", "angle=", pos.angle,"x=",pos.x,"y=",pos.y); //to debug
+								  //printf("%s%d%s%f%s%f", "angle=", pos.angle,"x=",pos.x,"y=",pos.y); //to debug
 
 	CreateShot(pos, vec); //set values to vec in accordance with pos.x,y,angle
 
@@ -242,36 +254,36 @@ Vector::Vector(const GAMESTATE* const gs, int rank) {
 	length = vec_length(this);
 	theta = angleFromCentor(this);
 	stone_rank = rank;
-	if (rank % 2 == gs->ShotNum % 2)myStone=true;//when my stone
+	if (rank % 2 == gs->ShotNum % 2)myStone = true;//when my stone
 	else myStone = false;
 }
 double vec_length(Vector* v) {
-		return sqrt(v->x*v->x + v->y*v->y);
+	return sqrt(v->x*v->x + v->y*v->y);
 }
 double innerProduct(Vector* v1, Vector* v2) {
-		return v1->x*v2->x + v1->y*v2->y;
+	return v1->x*v2->x + v1->y*v2->y;
 }
 /*
 double angle(Vector* v1, Vector* v2) {//angle between v1 and v2
-	double length1 = dist(v1);
-	double length2 = dist(v2);
-	double inner = innerProduct(v1, v2);
-	double cos = inner / (length1*length2);
-	return acos(cos);
+double length1 = dist(v1);
+double length2 = dist(v2);
+double inner = innerProduct(v1, v2);
+double cos = inner / (length1*length2);
+return acos(cos);
 }
 */
 
 double angleFromCentor(Vector* v1) {
 	double PI = 3.141592653589793;
 	//return atan2(v1->y, v1->x) //radian
-	return 180*(atan2(v1->y,v1->x))/PI;//degree
+	return 180 * (atan2(v1->y, v1->x)) / PI;//degree
 }
 
 //remove opponent's stone and stay my stone 
 bool CreateHitAndStayShot(const GAMESTATE* const gs, int stone, SHOTVEC* vec_ret) {
 	if (stone % 2 == gs->ShotNum % 2)return false;//when my stone
-	//if moving second, return false
-	//if moving first, go next
+												  //if moving second, return false
+												  //if moving first, go next
 
 	SHOTPOS pos;
 	pos.x = gs->body[stone][0];
@@ -354,7 +366,7 @@ bool CreateFreezeShot(const GAMESTATE* const gs, int stone, SHOTVEC* vec_ret) {
 	pos.x = gs->body[stone][0];
 	pos.y = gs->body[stone][1] + (float)3.0*STONE_R;
 	pos.angle = 1;//turn left
-	CreateShot(pos,vec_ret);
+	CreateShot(pos, vec_ret);
 	if (EasyCanShotReach(gs, pos)) {
 		return true;
 	}
