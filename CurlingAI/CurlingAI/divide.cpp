@@ -118,23 +118,20 @@ int searchPolar(const GAMESTATE* const gs) {
 			if (a[stone_num[i]] > stof(min1.at(t)) && a[stone_num[i]] < stof(max1.at(t)) && r[stone_num[i]] > stof(min2.at(t)) && r[stone_num[i]] < stof(max2.at(t))) {
 				ostringstream sout;
 				sout << setfill('0') << setw(4) << t;
+				cerr << "a:" << sout.str() << endl;
 				pos += sout.str() + to_string(int(c[stone_num[i]]));
 			}
 		}
 	}
-	if (situation.size() < 16 && (situation.size() < gs->ShotNum||situation.size()==0)) {
+	cerr << pos << endl;
+	if (situation.size() < 16 && (situation.size() < gs->ShotNum-1||situation.size()==0)) {
 		unordered_map<string, int> line;
 		situation.push_back(line);
 	}
-
-	if (situation.at(gs->ShotNum).size() == 0) {
-		unordered_map<string, int> line;
-		situation.at(gs->ShotNum).at(pos) = 0;
+	if (situation.at(gs->ShotNum-1)[pos] == 0) {
+		situation.at(gs->ShotNum-1)[pos] = situation.at(gs->ShotNum-1).size() + 1;
 	}
-	if (situation.at(gs->ShotNum).at(pos) == 0) {
-		situation.at(gs->ShotNum).at(pos) = situation.at(gs->ShotNum).size() + 1;
-	}
-	return situation.at(gs->ShotNum).at(pos);
+	return situation.at(gs->ShotNum-1)[pos];
 }
 void searchCartesian() {
 

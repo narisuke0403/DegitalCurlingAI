@@ -1,11 +1,11 @@
 ﻿  divide.cpp
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(96): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(104): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(112): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(121): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(129): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(161): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(162): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(163): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\masat\desktop\curlingai\curlingai\divide.cpp(164): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-  CurlingAI.vcxproj -> C:\Users\masat\Desktop\CurlingAI\Debug\CurlingAI.exe
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(92): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(100): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(108): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(117): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(127): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(143): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(144): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(145): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(146): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  CurlingAI.vcxproj -> C:\Users\sungw\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe
