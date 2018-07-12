@@ -30,7 +30,7 @@ void dividePolar() {
 	string line;
 	int i = 0;
 	while (getline(ifs, line)) {
-		vector<string> strvec =split(line, ',');
+		vector<string> strvec = split(line, ',');
 		if (i == 0) {
 			min1 = strvec;
 			i++;
@@ -55,7 +55,7 @@ void dividePolar() {
 }
 
 void divideCartesian() {
-	
+
 }
 
 //深さ順にソート
@@ -69,8 +69,8 @@ void get_ranking(int *rank, int depth[16])
 	int tmp;
 	for (int i = 1; i < 16; i++) {
 		for (int j = i; j > 0; j--) {
-			if(depth[j] < depth[j-1]){
-			// swap
+			if (depth[j] < depth[j - 1]) {
+				// swap
 				tmp = rank[j];
 				rank[j] = rank[j - 1];
 				rank[j - 1] = tmp;
@@ -95,9 +95,9 @@ int searchPolar(const GAMESTATE* const gs) {
 	int RANK_rank[16];
 	int stone_num[16];
 	//ランクでソート
-	for (int i = 0; i < 16; i++) {	
+	for (int i = 0; i < 16; i++) {
 		if (gs->body[i][0] + gs->body[i][1] != 0) {
-			a[i] = atan2(gs->body[i][1] - _y_center, gs->body[i][0] - _x_center)*180 / M_PI;
+			a[i] = atan2(gs->body[i][1] - _y_center, gs->body[i][0] - _x_center) * 180 / M_PI;
 			r[i] = sqrt((gs->body[i][1] - _y_center)*(gs->body[i][1] - _y_center) + (gs->body[i][0] - _x_center)*(gs->body[i][0] - _x_center));
 			if (i % 2 == 0) {
 				c[i] = true;
@@ -118,11 +118,14 @@ int searchPolar(const GAMESTATE* const gs) {
 			if (a[stone_num[i]] > stof(min1.at(t)) && a[stone_num[i]] < stof(max1.at(t)) && r[stone_num[i]] > stof(min2.at(t)) && r[stone_num[i]] < stof(max2.at(t))) {
 				ostringstream sout;
 				sout << setfill('0') << setw(4) << t;
-				pos += sout.str()+to_string(int(c[stone_num[i]]));
+				pos += sout.str() + to_string(int(c[stone_num[i]]));
 			}
 		}
 	}
-
+	if (situation.size() < 16 && situation.size() < gs->ShotNum) {
+		unordered_map<string, int> line;
+		situation.push_back(line);
+	}
 	if (situation.at(gs->ShotNum).at(pos) == 0) {
 		situation.at(gs->ShotNum).at(pos) = situation.at(gs->ShotNum).size() + 1;
 	}
