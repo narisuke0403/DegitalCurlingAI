@@ -5,7 +5,7 @@ extern vector<unordered_map<string, int>> situation;
 
 //使い方
 //引数に、現在のノード、行動した後のノード、とった行動　をいれると、現在のノードのQ値を更新する
-void Qlearning(Node *now,Node const next,int indexP,int indexS,int angle) {
+void Qlearning(Node *now, Node next, int indexP, int indexS, int angle) {
 	float alpha = 0.5; //どのくらい学習結果を反映させるか 0:一切反映させない　1:更新値自体が学習値になる
 	float lamda = 1; //割引率、のちに関数にして対応することも可
 	float score = 0;

@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <iomanip>
-vector<string> min1, max1, min2, max2, RANK;
+std::vector<std::string> min1, max1, min2, max2, RANK;
 int map[100][100];
 vector<unordered_map<string, int>> situation;
 
@@ -126,8 +126,11 @@ int searchPolar(const GAMESTATE* const gs) {
 		unordered_map<string, int> line;
 		situation.push_back(line);
 	}
-	cerr << gs->ShotNum << endl;
-	
+
+	if (situation.at(gs->ShotNum).size() == 0) {
+		unordered_map<string, int> line;
+		situation.at(gs->ShotNum).at(pos) = 0;
+	}
 	if (situation.at(gs->ShotNum).at(pos) == 0) {
 		situation.at(gs->ShotNum).at(pos) = situation.at(gs->ShotNum).size() + 1;
 	}

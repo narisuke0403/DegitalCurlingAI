@@ -14,6 +14,7 @@
 #include "CurlingSimulator.h"
 #include "strategy.h"
 #include "divide.h"
+#include "Qlearning.h"
 #include "Node.h"
 
 extern HMODULE hCSDLL;

@@ -3,14 +3,20 @@
 
 #include <sstream>
 #include <fstream>
+#include <random>
+#include <crtdbg.h>
 extern vector<unordered_map<string, int>> situation;
+Node *savedNode[16];
+int savedIndexP[16];
+int savedIndexS[16];
+int savedAngle[16];
 Node::Node(const GAMESTATE* const gs) {
 	gsNode = new GAMESTATE(*gs);
 	loadQtable();
 }
 
 void Node::loadQtable() {
-	ifstream ifs("Qtable.csv");
+	ifstream ifs("C:\DigitalCurling_Ver1.16 - VS2015\Release\Qtable.csv");
 	string line;
 	bool isExist = false;
 	int size = 0;
@@ -42,49 +48,63 @@ void Node::loadQtable() {
 
 
 void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
+	Node *curr = new Node(gsNode);
 	float max = -100;
-	int indexP = 0;
-	int indexS = 0;
-	int angle = 0;
-	cerr << "now throwAndAddNode1" << endl;
+	vector<int> *sameValues = new vector<int>();
 	for (int p = 0; p < shotVariation; p++) {//find highest value and its index
 		for (int s = 0; s < stateNum; s++) {
 			for (int a = 0; a < 2; a++) {
 				if (Qtable[(p * 16 + s) * 2 + a] > max) {
+					if(max!=-100)free(sameValues);
 					max = Qtable[(p * 16 + s)];
-					indexP = p;
-					indexS = s;
-					angle = a;
+					sameValues->push_back((p * 16 + s) * 2 + a);
+				}
+				else if (Qtable[(p * 16 + s) * 2 + a] == max) {
+					sameValues->push_back((p * 16 + s) * 2 + a);
 				}
 			}
 		}
-	}
-	cerr << "now throwAndAddNode2" << endl;
+	}  
+	random_device rnd;     // 非決定的な乱数生成器を生成
+	mt19937 mt(rnd());     //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
+	uniform_int_distribution<> rand100(0, sameValues->size());        // [0, sameValues.size()] 範囲の一様乱数
+	int index = sameValues->at(rand100(mt));
+	int angle = index % 2;
+	int indexS = ((index - (index % 2)) % (stateNum * 2)) / 2;
+	int indexP = int(index / (stateNum * 2));
+	cerr << "p,s,a" << endl;
+	cerr << indexP << "," << indexS << "," << angle << endl;
+	cerr << (indexP * 16 + indexS) * 2 + angle << endl;
+	cerr << index << endl;
 	float pos[2];
 	SHOTPOS shot;
 	pos[0] = 5;
 	pos[1] = 5;
-	cerr << "p,s,a" << endl;
-	cerr << indexP << indexS << angle << endl;
-	cerr << (indexP * 16 + indexS) * 2 + angle << endl;
-	PolarToCartesian((indexP * 16 + indexS)*2 + angle, pos);
+
+	cerr << "helloaaaa\n";
+	PolarToCartesian(indexS, pos);
+	cerr << "hellobbbbb\n";
 	shot.x = pos[0];
 	shot.y = pos[1];
 	shot.angle = angle;
-	cerr << "now throwAndAddNode3" << endl;
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
 	CreateHitShot(shot, indexP, vec);
 	Simulation(nextGs, *vec, 0.3f, NULL, -1);
-	//int number = searchPolar(nextGs);
-	int number = 1;
+	cerr << __LINE__;
+	int number = searchPolar(nextGs);
+	cerr << __LINE__;
+	//int number = 1;
 	string num = to_string(number);
 	std::unordered_map<std::string, int> currState;
-	cerr << "hoge" << endl;
+	cerr << "hello\n";
 	currState = situation.at(gsNode->ShotNum);
-	cerr << "now throwAndAddNode4" << endl;
 	auto itr = currState.find(num);        // string(number) が設定されているか？
 	next = new Node(nextGs);
 	next->parent = this;
+	savedNode[gsNode->ShotNum] = curr;
+	savedIndexS[gsNode->ShotNum] = indexS;
+	savedIndexP[gsNode->ShotNum] = indexP;
+	savedAngle[gsNode->ShotNum] = angle;
 	//投げてそのノードに移動するために代入
 	/*if (itr != currState.end()) {
 		//設定されている場合の処理
@@ -284,37 +304,19 @@ shotPower[i] = 0;
 */
 
 
-/*
-void outLogs() {
-ofstream logging;
-string filename = "StateLog.csv";
-vector<vector<string>> table;
-bool status = false;
-status= status = GetContents(filename, table);
-logging.open("StateLog.csv", ios::app);
-for (int i = 0; i < 16; i++) {
-for (int j = 0; j < 16; j++) {
-logging << gameState[i].body[j][0] << ",";
-logging << gameState[i].body[j][1] << ",";
-}
-for (int j = 0; j < 8; j++) {
-logging << gameState[i].Score[j] << ",";
-}
-logging << gameState[i].LastEnd << ",";
-logging << gameState[i].CurEnd << ",";
-logging << gameState[i].ShotNum << ",";
-logging << gameState[i].WhiteToMove << ",";
-if (shotPos[i].x + shotPos[i].y != 0) {
-logging << shotPos[i].x << ",";
-logging << shotPos[i].y << ",";
-logging << shotPos[i].angle << ",";
-logging << shotPower[i] << endl;
-}
-else logging << endl;
-}
-logging.close();
-}
 
-
-
-*/
+void outLogs(Node *curr) {
+	ofstream logging;
+	string filename = "Qtable.csv";
+	vector<vector<string>> table;
+	bool status = false;
+	status = status = GetContents(filename, table);
+	logging.open(filename, ios::app);
+	logging << curr->gsNode->ShotNum << ",";
+	logging << searchPolar(curr->gsNode) << ",";
+	for (int i = 0; i < stateNum*shotVariation*2; i++) {
+		logging << curr->Qtable[i];
+		if (i < stateNum*shotVariation * 2 - 1)logging << ",";
+	}
+	logging.close();
+}

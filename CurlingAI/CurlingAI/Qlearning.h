@@ -1,12 +1,8 @@
 #pragma once
-#include "Node.h"
-#include "divide.h"
 #include "main.h"
 #include <vector>
 #include <stdio.h>
+#include "Node.h"
+#include "divide.h"
 
-class Qlearning {
-public:
-	std::array<Node, 16> *QNode;
-	Qlearning();
-};
+//void Qlearning(Node *curr, Node const next, int indexP, int indexS, int angle);

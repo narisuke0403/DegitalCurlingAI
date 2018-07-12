@@ -188,20 +188,7 @@ bool processCommand(char *command)
 		SHOTVEC vec;
 		// get a Shot by getBestShot (defined in 'strategy.cpp')
 		getBestShot(&GameState, &vec);
-		shot = vec;
-		SHOTPOS pos;
-		pos.x = 0;
-		pos.y = 0;
-		pos.angle = 0;
-		float power = 10;//from 0 to 16
-						 //pos,power‚ÍQ’l‚É‚æ‚Á‚ÄŒˆ’è
-		CreateHitShot(pos, power, &vec);
-		//saveShotAndStateAndPower(&GameState, &pos, power);
-		/*
-
-		*/
-
-
+		
 		/*
 		int stone_num[16];
 		get_ranking(stone_num, &GameState);
@@ -223,7 +210,17 @@ bool processCommand(char *command)
 			return false;
 		}
 		GameState.Score[GameState.CurEnd] = atoi(buffer);
-		//	outLogs();
+		extern Node *savedNode[16];
+		extern int savedIndexP[16];
+		extern int savedIndexS[16];
+		extern int savedAngle[16];
+		extern void Qlearning(Node *now, Node next, int indexP, int indexS, int angle);
+		for (int i = 14; i >= 0; i--) {
+			Qlearning(savedNode[i], *savedNode[i + 1], savedIndexP[i], savedIndexS[i], savedAngle[i]);
+		}
+		for (int i = 0; i < 16; i++) {
+			outLogs(savedNode[i]);
+		}
 	}
 
 	return true;

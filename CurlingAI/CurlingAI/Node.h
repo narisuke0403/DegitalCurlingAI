@@ -9,7 +9,6 @@ const int stateNum = 1350;
 const int shotVariation = 16;
 
 
-
 class Node {
 public:
 	GAMESTATE * gsNode;
@@ -25,10 +24,10 @@ public:
 	void throwAndAddNode(SHOTVEC *vec, Node *next);
 	void saveNode();
 };
+void outLogs(Node *curr);
 /*
 void saveGameState(const GAMESTATE* const gs);
 void saveShotAndStateAndPower(const GAMESTATE* const gs,SHOTPOS *pos,float power);
 void initState();
 void initPos();
-void outLogs();
 */
