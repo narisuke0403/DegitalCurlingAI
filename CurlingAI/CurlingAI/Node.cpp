@@ -84,6 +84,7 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	cerr << "now throwAndAddNode4" << endl;
 	auto itr = currState.find(num);        // string(number) ‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©H
 	next = new Node(nextGs);
+	next->parent = this;
 	//“Š‚°‚Ä‚»‚Ìƒm[ƒh‚ÉˆÚ“®‚·‚é‚½‚ß‚É‘ã“ü
 	/*if (itr != currState.end()) {
 		//İ’è‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
