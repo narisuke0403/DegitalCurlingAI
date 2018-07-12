@@ -1,12 +1,9 @@
 #pragma once
 #include "Node.h"
-#include "divide.h"
 
 #include <sstream>
 #include <fstream>
-
-
-
+extern vector<unordered_map<string, int>> situation;
 Node::Node(const GAMESTATE* const gs) {
 	gsNode = new GAMESTATE(*gs);
 	loadQtable();
@@ -14,10 +11,10 @@ Node::Node(const GAMESTATE* const gs) {
 
 void Node::loadQtable() {
 	ifstream ifs("Qtable.csv");
-	std::string line;
+	string line;
 	int count = 0;
 	while (getline(ifs, line)) {
-		std::vector<std::string> stringvec = split(line, ',');
+		vector<string> stringvec = split(line, ',');
 		for (int i = 0; i < stringvec.size(); i++) {
 			Qtable[count] = stof(stringvec.at(i));
 			count++;
@@ -193,7 +190,8 @@ shotPower[i] = 0;
 }
 }
 */
-
+/*
+/*
 //use for Logging
 bool GetContents(const string& filename, vector<vector<string>>& table, const char delimiter = ',')
 {

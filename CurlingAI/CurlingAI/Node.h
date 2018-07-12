@@ -4,14 +4,9 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-using namespace std;
-
-//GAMESTATE gameState[16];
-//SHOTPOS shotPos[16];
-//float shotPower[16];
+#include "divide.h"
 const int stateNum = 1350;
 const int shotVariation = 16;
-std::unordered_map<std::string, int> situation;
 
 
 
@@ -28,15 +23,6 @@ public:
 	Node(const GAMESTATE* const gs);
 	void loadQtable();
 	void through();
-
-	/*
-	void addChildrenByMontecarlo(const GAMESTATE* const gs);
-	void addChildrenByQ(const GAMESTATE* const gs);
-	double getScore();
-	void changeEval();
-	void setQtable();
-	void updateQ(Node *curr);
-	*/
 };
 /*
 void saveGameState(const GAMESTATE* const gs);

@@ -13,6 +13,8 @@
 #include <unordered_map>
 #include <iostream>
 #include <iomanip>
+using namespace std;
+vector<string> split(string& input, char delimiter);
 void dividePolar();
 void divideCartesian();
 int searchPolar(const GAMESTATE* const gs);

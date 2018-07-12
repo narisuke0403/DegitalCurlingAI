@@ -8,11 +8,9 @@
 #include <unordered_map>
 #include <iostream>
 #include <iomanip>
-
-using namespace std;
 vector<string> min1, max1, min2, max2,RANK;
 int map[100][100];
-unordered_map<string, int>* situation[16];
+vector<unordered_map<string, int>> situation;
 
 vector<string> split(string& input, char delimiter)
 {
@@ -124,10 +122,11 @@ int searchPolar(const GAMESTATE* const gs) {
 			}
 		}
 	}
-	if (situation[gs->ShotNum].at(pos) == 0) {
-		situation[gs->ShotNum]->at(pos) = situation[gs->ShotNum].size() + 1;
+
+	if (situation.at(gs->ShotNum).at(pos) == 0) {
+		situation.at(gs->ShotNum).at(pos) = situation.at(gs->ShotNum).size() + 1;
 	}
-	return situation[gs->ShotNum].at(pos);
+	return situation.at(gs->ShotNum).at(pos);
 }
 void searchCartesian() {
 
