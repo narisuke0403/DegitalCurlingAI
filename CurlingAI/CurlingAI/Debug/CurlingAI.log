@@ -1,11 +1,12 @@
-﻿  divide.cpp
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(92): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(100): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(108): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(117): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(127): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(143): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(144): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(145): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\divide.cpp(146): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-  CurlingAI.vcxproj -> C:\Users\sungw\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe
+﻿  Node.cpp
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(19): warning C4129: 'D': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(19): warning C4129: 'R': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(19): warning C4129: 'Q': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(34): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(94): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(309): warning C4129: 'D': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(309): warning C4129: 'R': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(309): warning C4129: 'Q': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(322): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(333): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  CurlingAI.vcxproj -> C:\Users\masat\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe

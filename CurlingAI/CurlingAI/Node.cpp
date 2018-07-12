@@ -48,6 +48,7 @@ void Node::loadQtable() {
 
 
 void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
+	dividePolar();
 	Node *curr = new Node(gsNode);
 	float max = -100;
 	vector<int> *sameValues = new vector<int>();
@@ -82,6 +83,8 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	pos[1] = 5;
 
 	cerr << "helloaaaa\n";
+	indexS = 100;
+	cerr << indexS << endl;
 	PolarToCartesian(indexS, pos);
 	cerr << "hellobbbbb\n";
 	shot.x = pos[0];
@@ -89,10 +92,8 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	shot.angle = angle;
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
 	CreateHitShot(shot, indexP, vec);
-	Simulation(nextGs, *vec, 0.3f, NULL, -1);
-	cerr << __LINE__;
+	//Simulation(nextGs, *vec, 0.3f, NULL, -1);
 	int number = searchPolar(nextGs);
-	cerr << __LINE__;
 	//int number = 1;
 	string num = to_string(number);
 	std::unordered_map<std::string, int> currState;
@@ -304,19 +305,37 @@ shotPower[i] = 0;
 */
 
 
-
 void outLogs(Node *curr) {
+	ifstream ifs("C:\DigitalCurling_Ver1.16 - VS2015\Release\Qtable.csv");
+	string line;
+	int size = 0;
+	vector<vector<string>>strvec;
+	while (getline(ifs, line)) {
+		strvec.push_back(split(line, ','));
+	}
 	ofstream logging;
 	string filename = "Qtable.csv";
 	vector<vector<string>> table;
 	bool status = false;
 	status = status = GetContents(filename, table);
-	logging.open(filename, ios::app);
-	logging << curr->gsNode->ShotNum << ",";
-	logging << searchPolar(curr->gsNode) << ",";
-	for (int i = 0; i < stateNum*shotVariation*2; i++) {
-		logging << curr->Qtable[i];
-		if (i < stateNum*shotVariation * 2 - 1)logging << ",";
+	bool isExist = true;
+	for (int i = 0; i < strvec.size(); i++) {
+		if (stoi(strvec.at(i).at(0)) == curr->gsNode->ShotNum&& stoi(strvec.at(i).at(1)) == searchPolar(curr->gsNode)) {
+			logging.open(filename, ios::app);
+			logging << curr->gsNode->ShotNum << ",";
+			logging << searchPolar(curr->gsNode) << ",";
+			for (int i = 0; i < stateNum*shotVariation * 2; i++) {
+				logging << curr->Qtable[i];
+				if (i < stateNum*shotVariation * 2 - 1)logging << ",";
+			}
+		}
+		else {
+			for (int j = 0; j < strvec.at(i).size(); j++) {
+				logging << strvec.at(i).at(j) << ",";
+			}
+		}
+
 	}
+
 	logging.close();
 }

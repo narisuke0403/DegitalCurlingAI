@@ -26,6 +26,7 @@ vector<string> split(string& input, char delimiter)
 //最初に一度呼んで離散化させておく関数
 //ファイルから数値を読み込むため、一度だけ呼ぶこと
 void dividePolar() {
+	cerr <<"load dividePolar\n";
 	ifstream ifs("out.csv");
 	string line;
 	int i = 0;
@@ -140,6 +141,7 @@ void searchCartesian() {
 void PolarToCartesian(int number, float* pos) {
 	pos[0] = 0;
 	pos[1] = 0;
+	cerr << "min1.size=" << min1.size() << endl;
 	float min_XA = cos(stof(min1[number]) * M_PI / 180);
 	float max_XA = cos(stof(max1[number]) * M_PI / 180);
 	float min_YA = sin(stof(min1[number]) * M_PI / 180);
