@@ -15,14 +15,18 @@ void Node::loadQtable() {
 	bool isExist = false;
 	int size = 0;
 	while (getline(ifs, line)) {
+		while (situation.size() < 16) {
+			unordered_map<string, int> line;
+			situation.push_back(line);
+		}
 		int count = 0;
 		vector<string> stringvec = split(line, ',');
 		size = stringvec.size();
 		//0=turn,1=KEY, 2~Qtable
 		KEY = stoi(stringvec.at(1));
-		if (stoi(stringvec.at(0)) == gsNode->ShotNum&&KEY==searchPolar(gsNode)) {
+		if (stoi(stringvec.at(0)) == gsNode->ShotNum) {
 			for (int i = 2; i < stringvec.size(); i++) {
-				cerr << count << endl;
+				//cerr << count << endl;
 				Qtable[count] = stof(stringvec.at(i));
 				count++;
 			}
@@ -71,24 +75,24 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
 	CreateHitShot(shot, indexP, vec);
 	Simulation(nextGs, *vec, 0.3f, NULL, -1);
-	int number = searchPolar(nextGs);
-	//int number = 1;
+	//int number = searchPolar(nextGs);
+	int number = 1;
 	string num = to_string(number);
 	std::unordered_map<std::string, int> currState;
-	cerr << "hoge";
+	cerr << "hoge" << endl;
 	currState = situation.at(gsNode->ShotNum);
 	cerr << "now throwAndAddNode4" << endl;
 	auto itr = currState.find(num);        // string(number) が設定されているか？
 	next = new Node(nextGs);
 	//投げてそのノードに移動するために代入
-	if (itr != currState.end()) {
+	/*if (itr != currState.end()) {
 		//設定されている場合の処理
 	}
 	else {
 		//設定されていない場合の処理
 		//ノードを追加
 		situation.at(gsNode->ShotNum).at(num) = situation.at(gsNode->ShotNum).size() + 1;
-	}
+	}*/
 }
 
 

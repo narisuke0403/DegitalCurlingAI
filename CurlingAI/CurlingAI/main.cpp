@@ -241,6 +241,7 @@ int main()
 	}
 
 	// process command
+	dividePolar();
 	int count = 0;
 	while (1) {
 		memset(message, 0x00, sizeof(message));

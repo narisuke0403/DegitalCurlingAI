@@ -122,10 +122,12 @@ int searchPolar(const GAMESTATE* const gs) {
 			}
 		}
 	}
-	if (situation.size() < 16 && situation.size() < gs->ShotNum) {
+	if (situation.size() < 16 && (situation.size() < gs->ShotNum||situation.size()==0)) {
 		unordered_map<string, int> line;
 		situation.push_back(line);
 	}
+	cerr << gs->ShotNum << endl;
+	
 	if (situation.at(gs->ShotNum).at(pos) == 0) {
 		situation.at(gs->ShotNum).at(pos) = situation.at(gs->ShotNum).size() + 1;
 	}
