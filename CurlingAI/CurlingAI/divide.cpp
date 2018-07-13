@@ -119,20 +119,25 @@ int searchPolar(const GAMESTATE* const gs) {
 			if (a[stone_num[i]] > stof(min1.at(t)) && a[stone_num[i]] < stof(max1.at(t)) && r[stone_num[i]] > stof(min2.at(t)) && r[stone_num[i]] < stof(max2.at(t))) {
 				ostringstream sout;
 				sout << setfill('0') << setw(4) << t;
-				cerr << "a:" << sout.str() << endl;
+	//			cerr << "a:" << sout.str() << endl;
 				pos += sout.str() + to_string(int(c[stone_num[i]]));
 			}
 		}
 	}
-	cerr << pos << endl;
-	if (situation.size() < 16 && (situation.size() < gs->ShotNum-1||situation.size()==0)) {
+	cerr << "pos="<< pos << endl;
+	while (situation.size() < 16 && (situation.size() < gs->ShotNum+1||situation.size()==0)) {
+	//	cerr << "in the first if\n";
 		unordered_map<string, int> line;
 		situation.push_back(line);
 	}
-	if (situation.at(gs->ShotNum-1)[pos] == 0) {
-		situation.at(gs->ShotNum-1)[pos] = situation.at(gs->ShotNum-1).size() + 1;
+	//cerr << "gs->ShotNum=" << gs->ShotNum << endl;
+	//cerr << "situation.at(0).size()=" << situation.at(0).size()<< endl;
+	//cerr << "situation.at(gs->ShotNum).size()=" << situation.at(gs->ShotNum).size() << endl;
+	if (situation.at(gs->ShotNum)[pos] == 0) {
+		situation.at(gs->ShotNum)[pos] = situation.at(gs->ShotNum).size() + 1;
 	}
-	return situation.at(gs->ShotNum-1)[pos];
+	//cerr << "serchPolar is end\n";
+	return situation.at(gs->ShotNum)[pos];
 }
 void searchCartesian() {
 
@@ -141,7 +146,7 @@ void searchCartesian() {
 void PolarToCartesian(int number, float* pos) {
 	pos[0] = 0;
 	pos[1] = 0;
-	cerr << "min1.size=" << min1.size() << endl;
+	//cerr << "min1.size=" << min1.size() << endl;
 	float min_XA = cos(stof(min1[number]) * M_PI / 180);
 	float max_XA = cos(stof(max1[number]) * M_PI / 180);
 	float min_YA = sin(stof(min1[number]) * M_PI / 180);

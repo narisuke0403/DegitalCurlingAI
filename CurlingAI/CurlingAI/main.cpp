@@ -211,17 +211,18 @@ bool processCommand(char *command)
 		}
 		GameState.Score[GameState.CurEnd] = atoi(buffer);
 		cerr << "Qlearning\n";
-		extern Node *savedNode[16];
-		extern int savedIndexP[16];
-		extern int savedIndexS[16];
-		extern int savedAngle[16];
+		extern Node *savedNode[8];
+		extern int savedIndexP[8];
+		extern int savedIndexS[8];
+		extern int savedAngle[8];
 		extern void Qlearning(Node *now, Node next, int indexP, int indexS, int angle);
-		for (int i = 14; i >= 0; i--) {
+		for (int i = 6; i >= 0; i--) {
 			Qlearning(savedNode[i], *savedNode[i + 1], savedIndexP[i], savedIndexS[i], savedAngle[i]);
 		}
-		for (int i = 0; i < 16; i++) {
-			outLogs(savedNode[i]);
-		}
+		
+		outLogs(savedNode);
+		
+		cerr << "end logging\n";
 	}
 
 	return true;

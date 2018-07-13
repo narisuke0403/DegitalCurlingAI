@@ -194,7 +194,8 @@ void throwSample(const GAMESTATE* const gs, SHOTVEC *vec_ret) {
 	/*
 	GAMESTATE* gs_copy = new GAMESTATE(*gs);
 	Simulation(gs_copy, *vec_ret, 0.30f, NULL, -1);
-	printf("OK");
+	
+	("OK");
 	*/
 }
 

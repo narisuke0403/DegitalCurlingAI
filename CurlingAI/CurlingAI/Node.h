@@ -24,7 +24,7 @@ public:
 	void throwAndAddNode(SHOTVEC *vec, Node *next);
 	void saveNode();
 };
-void outLogs(Node *curr);
+void outLogs(Node *curr[8]);
 /*
 void saveGameState(const GAMESTATE* const gs);
 void saveShotAndStateAndPower(const GAMESTATE* const gs,SHOTPOS *pos,float power);

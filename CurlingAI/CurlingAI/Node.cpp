@@ -6,10 +6,10 @@
 #include <random>
 #include <crtdbg.h>
 extern vector<unordered_map<string, int>> situation;
-Node *savedNode[16];
-int savedIndexP[16];
-int savedIndexS[16];
-int savedAngle[16];
+Node *savedNode[8];
+int savedIndexP[8];
+int savedIndexS[8];
+int savedAngle[8];
 Node::Node(const GAMESTATE* const gs) {
 	gsNode = new GAMESTATE(*gs);
 	loadQtable();
@@ -52,7 +52,7 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	Node *curr = new Node(gsNode);
 	float max = -100;
 	vector<int> *sameValues = new vector<int>();
-	for (int p = 0; p < shotVariation; p++) {//find highest value and its index
+	for (int p = 10; p < shotVariation; p++) {//find highest value and its index
 		for (int s = 0; s < stateNum; s++) {
 			for (int a = 0; a < 2; a++) {
 				if (Qtable[(p * 16 + s) * 2 + a] > max) {
@@ -70,9 +70,11 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	mt19937 mt(rnd());     //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
 	uniform_int_distribution<> rand100(0, sameValues->size());        // [0, sameValues.size()] 範囲の一様乱数
 	int index = sameValues->at(rand100(mt));
+	cerr << sameValues->size()<<endl;
 	int angle = index % 2;
-	int indexS = ((index - (index % 2)) % (stateNum * 2)) / 2;
-	int indexP = int(index / (stateNum * 2));
+	int tmp = (index - angle) / 2;
+	int indexS = tmp%shotVariation;
+	int indexP = int(tmp%shotVariation);
 	cerr << "p,s,a" << endl;
 	cerr << indexP << "," << indexS << "," << angle << endl;
 	cerr << (indexP * 16 + indexS) * 2 + angle << endl;
@@ -83,7 +85,6 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	pos[1] = 5;
 
 	cerr << "helloaaaa\n";
-	indexS = 100;
 	cerr << indexS << endl;
 	PolarToCartesian(indexS, pos);
 	cerr << "hellobbbbb\n";
@@ -92,7 +93,7 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	shot.angle = angle;
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
 	CreateHitShot(shot, indexP, vec);
-	//Simulation(nextGs, *vec, 0.3f, NULL, -1);
+	Simulation(nextGs, *vec, 0.3f, NULL, -1);
 	int number = searchPolar(nextGs);
 	//int number = 1;
 	string num = to_string(number);
@@ -102,10 +103,10 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	auto itr = currState.find(num);        // string(number) が設定されているか？
 	next = new Node(nextGs);
 	next->parent = this;
-	savedNode[gsNode->ShotNum] = curr;
-	savedIndexS[gsNode->ShotNum] = indexS;
-	savedIndexP[gsNode->ShotNum] = indexP;
-	savedAngle[gsNode->ShotNum] = angle;
+	savedNode[(gsNode->ShotNum)/2] = curr;
+	savedIndexS[(gsNode->ShotNum) / 2] = indexS;
+	savedIndexP[(gsNode->ShotNum) / 2] = indexP;
+	savedAngle[(gsNode->ShotNum) / 2] = angle;
 	//投げてそのノードに移動するために代入
 	/*if (itr != currState.end()) {
 		//設定されている場合の処理
@@ -279,8 +280,7 @@ gameState[gs->ShotNum] = GAMESTATE(*gs);
 shotPos[gs->ShotNum] = SHOTPOS(*pos);
 shotPower[gs->ShotNum] = power;
 }
-void initState() {
-cout << "a";
+void initState(<< "a";
 for (int i = 0; i < 16; i++) {
 memset(gameState[i].body, 0x00, sizeof(float) * 32);
 memset(gameState[i].Score, 0x00, sizeof(int) * 10);
@@ -304,38 +304,62 @@ shotPower[i] = 0;
 }
 */
 
-
-void outLogs(Node *curr) {
-	ifstream ifs("C:\DigitalCurling_Ver1.16 - VS2015\Release\Qtable.csv");
+void outLogs(Node *curr[8]) {
+	//cerr << searchPolar(curr->gsNode) << endl;
+	cerr << "loadQtable\n";
+	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
 	string line;
 	int size = 0;
 	vector<vector<string>>strvec;
 	while (getline(ifs, line)) {
 		strvec.push_back(split(line, ','));
 	}
+	cerr << "start logging\n";
 	ofstream logging;
-	string filename = "Qtable.csv";
+	string filename = "C:\\DigitalCurlingSimulate\\Release\\Qtable.csv";
 	vector<vector<string>> table;
 	bool status = false;
+	logging.open(filename, ios::trunc);
+	logging.close();
+	logging.open(filename, ios::app);
 	status = status = GetContents(filename, table);
-	bool isExist = true;
-	for (int i = 0; i < strvec.size(); i++) {
-		if (stoi(strvec.at(i).at(0)) == curr->gsNode->ShotNum&& stoi(strvec.at(i).at(1)) == searchPolar(curr->gsNode)) {
-			logging.open(filename, ios::app);
-			logging << curr->gsNode->ShotNum << ",";
-			logging << searchPolar(curr->gsNode) << ",";
+	bool isExist = false;
+	cerr << "strvec.size()=" << strvec.size() << endl;
+	for (int n = 0; n < 8; n++) {
+		int polar = searchPolar(curr[n]->gsNode);
+		for (int i = 0; i < strvec.size(); i++) {
+			if (stoi(strvec.at(i).at(0)) == curr[n]->gsNode->ShotNum&& stoi(strvec.at(i).at(1)) == polar) {
+				isExist = true;
+				vector<string> newStr;
+				newStr.push_back(to_string(curr[n]->gsNode->ShotNum));
+				newStr.push_back(to_string(polar));
+				for (int j = 0; j < stateNum*shotVariation * 2; i++) {
+					newStr.push_back(to_string(curr[n]->Qtable[i]));
+				}
+				strvec.at(i) = newStr;
+			}
+			for (int j = 0; j < strvec.at(i).size(); j++) {
+				logging << strvec.at(i).at(j);
+				if (j < strvec.at(i).size() - 1)logging << ",";
+			}
+			logging << endl;
+
+		}
+		if (!isExist) {
+			logging << curr[n]->gsNode->ShotNum << ",";
+			logging << polar << ",";
 			for (int i = 0; i < stateNum*shotVariation * 2; i++) {
-				logging << curr->Qtable[i];
+				logging << curr[n]->Qtable[i];
 				if (i < stateNum*shotVariation * 2 - 1)logging << ",";
 			}
-		}
-		else {
-			for (int j = 0; j < strvec.at(i).size(); j++) {
-				logging << strvec.at(i).at(j) << ",";
-			}
-		}
+			logging << endl;
 
+		}
 	}
+	cerr << "wrote logs\n";
 
 	logging.close();
 }
+/*
+
+*/
