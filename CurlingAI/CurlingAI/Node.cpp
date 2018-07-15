@@ -127,6 +127,7 @@ bool GetContents(const string& filename, vector<vector<string>>& table, const ch
 	if (!filestream.is_open())
 	{
 		// ファイルが開けなかった場合は終了する
+		cerr << "i can't open the fiel\n";
 		return false;
 	}
 
@@ -332,7 +333,8 @@ void outLogs(Node *curr[8]) {
 		//cerr << searchPolar(curr[n]->gsNode) << endl;
 		//cerr << "--------------------------------------\n";
 		isExist[n] = false;
-		searchPolar(curr[n]->gsNode,&polar[n]);
+		searchPolar(curr[n]->gsNode, &polar[n]);
+		cerr << polar[n] << endl;
 	//	cerr << "now\n";
 		for (int i = 0; i < strvec.size(); i++) {
 			if (stoi(strvec.at(i).at(0)) == curr[n]->gsNode->ShotNum&& stoi(strvec.at(i).at(1)) == stoi(polar[n])) {
@@ -354,22 +356,28 @@ void outLogs(Node *curr[8]) {
 			logging << strvec.at(i).at(j);
 			if (j < strvec.at(i).size() - 1)logging << ",";
 		}
-	//	cerr << "processing complete rate is" << i << "/" << strvec.size() << endl;
+		cerr << "processing complete rate is" << i << "/" << strvec.size() << endl;
 		logging << endl;
 	}
 	for (int n = 0; n < 8; n++) {
-	//	cerr << "isExist ==" << isExist[n] << endl;
+		if (isExist[n])	cerr << "isExist["<<n<<"] ==true" << endl;
+		if (!isExist[n])	cerr << "isExist[" << n << "] ==false" << endl;
 		if (!isExist[n]) {
+			cerr << "no\n";
 			logging << curr[n]->gsNode->ShotNum << ",";
+			cerr << "yes\n";
 			logging << polar[n] << ",";
+			cerr << "all number is" << stateNum * shotVariation * 2 << endl;
 			for (int i = 0; i < stateNum*shotVariation * 2; i++) {
+				if (i % 5000 == 0)cerr << i << "/" << stateNum * shotVariation * 2 << "is ended\n";
 				logging << curr[n]->Qtable[i];
 				if (i < stateNum*shotVariation * 2 - 1)logging << ",";
 			}
 			logging << endl;
+			cerr << "endlogging" << n << endl;
 		}
 	}
-	//cerr << "wrote logs\n";
+	cerr << "end logging\n";
 	logging.close();
 }
 /*

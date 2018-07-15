@@ -84,7 +84,7 @@ void get_ranking(int *rank, int depth[16])
 }
 
 //”Õ–Ê‚ğˆø”‚Æ‚µ‚ÄAsituation‚Ì”Ô†‚ğ•Ô‚·
-int searchPolar(const GAMESTATE* const gs,string* _pos) {
+int searchPolar(const GAMESTATE* const gs, string* _pos) {
 	float* a = new float[16];
 	float* r = new float[16];
 	bool* c = new bool[16];
@@ -124,8 +124,9 @@ int searchPolar(const GAMESTATE* const gs,string* _pos) {
 			}
 		}
 	}
-	cerr << "pos="<< pos << endl;
-	_pos[0] = pos;
+	//cerr << "pos="<< pos << endl;
+	*_pos = pos;
+	//cerr << *_pos << endl;
 	while (situation.size() < 16 && (situation.size() < gs->ShotNum+1||situation.size()==0)) {
 	//	cerr << "in the first if\n";
 		unordered_map<string, int> line;
