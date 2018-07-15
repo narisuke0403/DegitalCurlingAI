@@ -48,7 +48,6 @@ void Node::loadQtable() {
 
 
 void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
-	dividePolar();
 	Node *curr = new Node(gsNode);
 	float max = -100;
 	vector<int> *sameValues = new vector<int>();
@@ -70,35 +69,36 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	mt19937 mt(rnd());     //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
 	uniform_int_distribution<> rand100(0, sameValues->size());        // [0, sameValues.size()] 範囲の一様乱数
 	int index = sameValues->at(rand100(mt));
-	cerr << sameValues->size()<<endl;
+	//cerr << sameValues->size()<<endl;
 	int angle = index % 2;
 	int tmp = (index - angle) / 2;
 	int indexS = tmp%shotVariation;
 	int indexP = int(tmp%shotVariation);
-	cerr << "p,s,a" << endl;
-	cerr << indexP << "," << indexS << "," << angle << endl;
-	cerr << (indexP * 16 + indexS) * 2 + angle << endl;
-	cerr << index << endl;
+	//cerr << "p,s,a" << endl;
+	//cerr << indexP << "," << indexS << "," << angle << endl;
+	//cerr << (indexP * 16 + indexS) * 2 + angle << endl;
+	//cerr << index << endl;
 	float pos[2];
 	SHOTPOS shot;
 	pos[0] = 5;
 	pos[1] = 5;
 
-	cerr << "helloaaaa\n";
-	cerr << indexS << endl;
+	//cerr << "helloaaaa\n";
+	//cerr << indexS << endl;
 	PolarToCartesian(indexS, pos);
-	cerr << "hellobbbbb\n";
+	//cerr << "hellobbbbb\n";
 	shot.x = pos[0];
 	shot.y = pos[1];
 	shot.angle = angle;
+	string key="";
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
 	CreateHitShot(shot, indexP, vec);
 	Simulation(nextGs, *vec, 0.3f, NULL, -1);
-	int number = searchPolar(nextGs);
+	int number = searchPolar(nextGs,&key);
 	//int number = 1;
 	string num = to_string(number);
 	std::unordered_map<std::string, int> currState;
-	cerr << "hello\n";
+	//cerr << "hello\n";
 	currState = situation.at(gsNode->ShotNum);
 	auto itr = currState.find(num);        // string(number) が設定されているか？
 	next = new Node(nextGs);
@@ -306,7 +306,7 @@ shotPower[i] = 0;
 
 void outLogs(Node *curr[8]) {
 	//cerr << searchPolar(curr->gsNode) << endl;
-	cerr << "loadQtable\n";
+	//cerr << "loadQtable\n";
 	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
 	string line;
 	int size = 0;
@@ -314,7 +314,7 @@ void outLogs(Node *curr[8]) {
 	while (getline(ifs, line)) {
 		strvec.push_back(split(line, ','));
 	}
-	cerr << "start logging\n";
+	//cerr << "start logging\n";
 	ofstream logging;
 	string filename = "C:\\DigitalCurlingSimulate\\Release\\Qtable.csv";
 	vector<vector<string>> table;
@@ -323,41 +323,53 @@ void outLogs(Node *curr[8]) {
 	logging.close();
 	logging.open(filename, ios::app);
 	status = status = GetContents(filename, table);
-	bool isExist = false;
-	cerr << "strvec.size()=" << strvec.size() << endl;
+	//cerr << "strvec.size()=" << strvec.size() << endl;
+	string polar[8];
+	bool isExist[8];
 	for (int n = 0; n < 8; n++) {
-		int polar = searchPolar(curr[n]->gsNode);
+		//cerr << "--------------------------------------\n";
+		//cerr << curr[n]->gsNode->ShotNum << endl;
+		//cerr << searchPolar(curr[n]->gsNode) << endl;
+		//cerr << "--------------------------------------\n";
+		isExist[n] = false;
+		searchPolar(curr[n]->gsNode,&polar[n]);
+	//	cerr << "now\n";
 		for (int i = 0; i < strvec.size(); i++) {
-			if (stoi(strvec.at(i).at(0)) == curr[n]->gsNode->ShotNum&& stoi(strvec.at(i).at(1)) == polar) {
-				isExist = true;
+			if (stoi(strvec.at(i).at(0)) == curr[n]->gsNode->ShotNum&& stoi(strvec.at(i).at(1)) == stoi(polar[n])) {
+				isExist[n] = true;
 				vector<string> newStr;
 				newStr.push_back(to_string(curr[n]->gsNode->ShotNum));
-				newStr.push_back(to_string(polar));
-				for (int j = 0; j < stateNum*shotVariation * 2; i++) {
-					newStr.push_back(to_string(curr[n]->Qtable[i]));
+				newStr.push_back(polar[n]);
+				for (int j = 0; j < stateNum*shotVariation * 2; j++) {
+					newStr.push_back(to_string(curr[n]->Qtable[j]));
 				}
 				strvec.at(i) = newStr;
 			}
-			for (int j = 0; j < strvec.at(i).size(); j++) {
-				logging << strvec.at(i).at(j);
-				if (j < strvec.at(i).size() - 1)logging << ",";
-			}
-			logging << endl;
-
+	//		cerr << "hello\n";
 		}
-		if (!isExist) {
+	//	cerr << "here\n";
+	}
+	for (int i = 0; i < strvec.size(); i++) {
+		for (int j = 0; j < strvec.at(i).size(); j++) {
+			logging << strvec.at(i).at(j);
+			if (j < strvec.at(i).size() - 1)logging << ",";
+		}
+	//	cerr << "processing complete rate is" << i << "/" << strvec.size() << endl;
+		logging << endl;
+	}
+	for (int n = 0; n < 8; n++) {
+	//	cerr << "isExist ==" << isExist[n] << endl;
+		if (!isExist[n]) {
 			logging << curr[n]->gsNode->ShotNum << ",";
-			logging << polar << ",";
+			logging << polar[n] << ",";
 			for (int i = 0; i < stateNum*shotVariation * 2; i++) {
 				logging << curr[n]->Qtable[i];
 				if (i < stateNum*shotVariation * 2 - 1)logging << ",";
 			}
 			logging << endl;
-
 		}
 	}
-	cerr << "wrote logs\n";
-
+	//cerr << "wrote logs\n";
 	logging.close();
 }
 /*

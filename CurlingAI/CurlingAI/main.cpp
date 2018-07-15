@@ -210,11 +210,14 @@ bool processCommand(char *command)
 			return false;
 		}
 		GameState.Score[GameState.CurEnd] = atoi(buffer);
-		cerr << "Qlearning\n";
+		//cerr << "Qlearning\n";
 		extern Node *savedNode[8];
 		extern int savedIndexP[8];
 		extern int savedIndexS[8];
 		extern int savedAngle[8];
+		for (int i = 0; i < 8; i++) {
+			savedNode[i]->gsNode->Score[savedNode[i]->gsNode->CurEnd] = GameState.Score[GameState.CurEnd];
+		}
 		extern void Qlearning(Node *now, Node next, int indexP, int indexS, int angle);
 		for (int i = 6; i >= 0; i--) {
 			Qlearning(savedNode[i], *savedNode[i + 1], savedIndexP[i], savedIndexS[i], savedAngle[i]);
@@ -241,11 +244,11 @@ int main()
 
 	// process command
 	int count = 0;
+	dividePolar();
 	while (1) {
 		memset(message, 0x00, sizeof(message));
 		recvCommand(message, sizeof(message));
 		processCommand(message);
-
 	}
 
 	return 0;

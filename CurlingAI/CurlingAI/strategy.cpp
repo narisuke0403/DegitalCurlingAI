@@ -203,7 +203,7 @@ void throwNode(const GAMESTATE* const gs, SHOTVEC *vec_ret) {
 	Node *curr = new Node(gs);
 	Node *next = new Node(gs);
 	curr->throwAndAddNode(vec_ret, next);
-	cerr << "x" << vec_ret->x << "y" << vec_ret->y << "a" << vec_ret->angle << endl;
+	//cerr << "x" << vec_ret->x << "y" << vec_ret->y << "a" << vec_ret->angle << endl;
 }
 
 void getBestShot(const GAMESTATE* const gs, SHOTVEC *vec_ret)

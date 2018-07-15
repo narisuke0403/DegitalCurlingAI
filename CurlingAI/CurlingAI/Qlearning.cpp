@@ -8,7 +8,9 @@ extern vector<unordered_map<string, int>> situation;
 void Qlearning(Node *now, Node next, int indexP, int indexS, int angle) {
 	float alpha = 0.5; //‚Ç‚Ì‚­‚ç‚¢ŠwKŒ‹‰Ê‚ð”½‰f‚³‚¹‚é‚© 0:ˆêØ”½‰f‚³‚¹‚È‚¢@1:XV’lŽ©‘Ì‚ªŠwK’l‚É‚È‚é
 	float lamda = 1; //Š„ˆø—¦A‚Ì‚¿‚ÉŠÖ”‚É‚µ‚Ä‘Î‰ž‚·‚é‚±‚Æ‚à‰Â
-	float score = 0;
+	//float score = 0;
+	int score = now->gsNode->Score[now->gsNode->CurEnd];
+	
 
 	int next_max_score = -1;
 	for (int i = 0; i < 43200; i++) {

@@ -105,7 +105,7 @@ int searchPolar(const GAMESTATE* const gs,string* _pos) {
 			}
 			else {
 				c[i] = false;
-			}W
+			}
 			for (int t = 0; t < min1.size(); t++) {
 				if (a[i] > stof(min1.at(t)) && a[i] < stof(max1.at(t)) && r[i] > stof(min2.at(t)) && r[i] < stof(max2.at(t))) {
 					RANK_rank[i] = stoi(RANK[t]);
@@ -125,7 +125,7 @@ int searchPolar(const GAMESTATE* const gs,string* _pos) {
 		}
 	}
 	cerr << "pos="<< pos << endl;
-	_pos[0] = pos;
+	_pos = &pos;
 	while (situation.size() < 16 && (situation.size() < gs->ShotNum+1||situation.size()==0)) {
 	//	cerr << "in the first if\n";
 		unordered_map<string, int> line;
