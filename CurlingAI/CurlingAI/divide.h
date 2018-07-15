@@ -17,7 +17,7 @@ using namespace std;
 vector<string> split(string& input, char delimiter);
 void dividePolar();
 void divideCartesian();
-int searchPolar(const GAMESTATE* const gs);
+int searchPolar(const GAMESTATE* const gs,string* _pos);
 void searchCartesian();
 void PolarToCartesian(int number, float* pos);
 
