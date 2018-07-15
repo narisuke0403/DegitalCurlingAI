@@ -1,11 +1,22 @@
 ﻿  Node.cpp
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(19): warning C4129: 'D': エスケープ シーケンスとして正しく認識されませんでした。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(19): warning C4129: 'R': エスケープ シーケンスとして正しく認識されませんでした。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(19): warning C4129: 'Q': エスケープ シーケンスとして正しく認識されませんでした。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(34): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(95): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(337): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(352): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(353): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\masat\desktop\curlingai - コピー\curlingai\node.cpp(355): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-  CurlingAI.vcxproj -> C:\Users\masat\Desktop\CurlingAI - コピー\Debug\CurlingAI.exe
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(19): warning C4129: 'D': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(19): warning C4129: 'R': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(19): warning C4129: 'Q': エスケープ シーケンスとして正しく認識されませんでした。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(34): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(95): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(337): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(352): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(353): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\node.cpp(355): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  divide.cpp
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(93): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(101): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(109): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(118): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(129): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(151): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(152): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(153): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\masat\desktop\curlingai\curlingai\divide.cpp(154): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  コードを生成中...
+  CurlingAI.vcxproj -> C:\Users\masat\Desktop\CurlingAI\Debug\CurlingAI.exe

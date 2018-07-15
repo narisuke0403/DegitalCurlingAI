@@ -125,7 +125,7 @@ int searchPolar(const GAMESTATE* const gs,string* _pos) {
 		}
 	}
 	cerr << "pos="<< pos << endl;
-	_pos = &pos;
+	_pos[0] = pos;
 	while (situation.size() < 16 && (situation.size() < gs->ShotNum+1||situation.size()==0)) {
 	//	cerr << "in the first if\n";
 		unordered_map<string, int> line;
