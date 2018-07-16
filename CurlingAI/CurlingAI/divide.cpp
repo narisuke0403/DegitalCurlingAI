@@ -141,8 +141,62 @@ int searchPolar(const GAMESTATE* const gs, string* _pos) {
 	//cerr << "serchPolar is end\n";
 	return situation.at(gs->ShotNum)[pos];
 }
-void searchCartesian() {
-
+int searchCartesian(const GAMESTATE* const gs, string* _pos) {
+	float* a = new float[16];
+	float* r = new float[16];
+	bool* c = new bool[16];
+	string* body = new string[16];
+	float _x_center = 2.375;
+	float _y_center = 4.88;
+	string pos = "";
+	int count = 0;
+	int RANK_rank[16];
+	int stone_num[16];
+	//ランクでソート
+	for (int i = 0; i < 16; i++) {
+		if (gs->body[i][0] + gs->body[i][1] != 0) {
+			a[i] = gs->body[i][0];//atan2(gs->body[i][1] - _y_center, gs->body[i][0] - _x_center) * 180 / M_PI;
+			r[i] = gs->body[i][1];//sqrt((gs->body[i][1] - _y_center)*(gs->body[i][1] - _y_center) + (gs->body[i][0] - _x_center)*(gs->body[i][0] - _x_center));
+			if (i % 2 == 0) {
+				c[i] = true;
+			}
+			else {
+				c[i] = false;
+			}
+			for (int t = 0; t < min1.size(); t++) {
+				if (a[i] > stof(min1.at(t)) && a[i] < stof(max1.at(t)) && r[i] > stof(min2.at(t)) && r[i] < stof(max2.at(t))) {
+					RANK_rank[i] = stoi(RANK[t]);
+				}
+			}
+		}
+	}
+	for (int i = 0; i < 16; i++) {
+		get_ranking(stone_num, RANK_rank);
+		for (int t = 0; t < min1.size(); t++) {
+			if (a[stone_num[i]] > stof(min1.at(t)) && a[stone_num[i]] < stof(max1.at(t)) && r[stone_num[i]] > stof(min2.at(t)) && r[stone_num[i]] < stof(max2.at(t))) {
+				ostringstream sout;
+				sout << setfill('0') << setw(4) << t;
+				//			cerr << "a:" << sout.str() << endl;
+				pos += sout.str() + to_string(int(c[stone_num[i]]));
+			}
+		}
+	}
+	//cerr << "pos="<< pos << endl;
+	*_pos = pos;
+	//cerr << *_pos << endl;
+	while (situation.size() < 16 && (situation.size() < gs->ShotNum + 1 || situation.size() == 0)) {
+		//	cerr << "in the first if\n";
+		unordered_map<string, int> line;
+		situation.push_back(line);
+	}
+	//cerr << "gs->ShotNum=" << gs->ShotNum << endl;
+	//cerr << "situation.at(0).size()=" << situation.at(0).size()<< endl;
+	//cerr << "situation.at(gs->ShotNum).size()=" << situation.at(gs->ShotNum).size() << endl;
+	if (situation.at(gs->ShotNum)[pos] == 0) {
+		situation.at(gs->ShotNum)[pos] = situation.at(gs->ShotNum).size() + 1;
+	}
+	//cerr << "serchPolar is end\n";
+	return situation.at(gs->ShotNum)[pos];
 }
 
 void PolarToCartesian(int number, float* pos) {

@@ -168,7 +168,7 @@ void outLogs(Node *curr[8]) {
 		//cerr << searchPolar(curr[n]->gsNode) << endl;
 		//cerr << "--------------------------------------\n";
 		isExist[n] = false;
-		searchPolar(curr[n]->gsNode, &polar[n]);
+		searchCartesian(curr[n]->gsNode, &polar[n]);
 		cerr << polar[n] << endl;
 	//	cerr << "now\n";
 		for (int i = 0; i < strvec.size(); i++) {
