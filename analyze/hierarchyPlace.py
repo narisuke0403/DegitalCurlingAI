@@ -50,7 +50,7 @@ def plot(data):
 
 #閾値の設定
 def thresshold(x):
-  return 3 ** x
+  return 3 ** x;
 
 #木構造の生成
 def maketree(a,r, node):
