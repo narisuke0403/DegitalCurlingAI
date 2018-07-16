@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include "divide.h"
-const int stateNum = 1350;
+const int stateNum = 1828;
 const int shotVariation = 16;
 
 
