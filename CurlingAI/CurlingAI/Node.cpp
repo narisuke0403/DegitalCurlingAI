@@ -15,6 +15,7 @@ Node::Node(const GAMESTATE* const gs) {
 	loadQtable();
 }
 
+//Qテーブルを読み込んで代入
 void Node::loadQtable() {
 	ifstream ifs("C:\DigitalCurling_Ver1.16 - VS2015\Release\Qtable.csv");
 	string line;
@@ -51,6 +52,8 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	Node *curr = new Node(gsNode);
 	float max = -100;
 	vector<int> *sameValues = new vector<int>();
+
+	//Qテーブルの最大値とそのインデックスを保存
 	for (int p = 10; p < shotVariation; p++) {//find highest value and its index
 		for (int s = 0; s < stateNum; s++) {
 			for (int a = 0; a < 2; a++) {
@@ -68,54 +71,37 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
 	random_device rnd;     // 非決定的な乱数生成器を生成
 	mt19937 mt(rnd());     //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
 	uniform_int_distribution<> rand100(0, sameValues->size());        // [0, sameValues.size()] 範囲の一様乱数
-	int index = sameValues->at(rand100(mt));
-	//cerr << sameValues->size()<<endl;
+	int index = sameValues->at(rand100(mt));//同じ値のデータをランダムに選択
+	
+	//インデックスからそれぞれの値を求める
 	int angle = index % 2;
 	int tmp = (index - angle) / 2;
 	int indexS = tmp%shotVariation;
 	int indexP = int(tmp%shotVariation);
-	//cerr << "p,s,a" << endl;
-	//cerr << indexP << "," << indexS << "," << angle << endl;
-	//cerr << (indexP * 16 + indexS) * 2 + angle << endl;
-	//cerr << index << endl;
+
+	//ショットを打つ場所を決めるポジションを初期化
 	float pos[2];
 	SHOTPOS shot;
-	pos[0] = 5;
-	pos[1] = 5;
+	pos[0] = 0;
+	pos[1] = 0;
 
-	//cerr << "helloaaaa\n";
-	//cerr << indexS << endl;
-	PolarToCartesian(indexS, pos);
-	//cerr << "hellobbbbb\n";
+	PolarToCartesian(indexS, pos);//posに座標を代入
 	shot.x = pos[0];
 	shot.y = pos[1];
 	shot.angle = angle;
+
+
 	string key="";
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
-	CreateHitShot(shot, indexP, vec);
+	//ここで代入されたベクターの値でショットを打つ
+	CreateHitShot(shot, indexP, vec);//ショットを打つベクターを生成
 	Simulation(nextGs, *vec, 0.3f, NULL, -1);
-	int number = searchPolar(nextGs,&key);
-	//int number = 1;
-	string num = to_string(number);
-	std::unordered_map<std::string, int> currState;
-	//cerr << "hello\n";
-	currState = situation.at(gsNode->ShotNum);
-	auto itr = currState.find(num);        // string(number) が設定されているか？
-	next = new Node(nextGs);
-	next->parent = this;
+
+	//Qテーブル更新用にそれぞれ保存
 	savedNode[(gsNode->ShotNum)/2] = curr;
 	savedIndexS[(gsNode->ShotNum) / 2] = indexS;
 	savedIndexP[(gsNode->ShotNum) / 2] = indexP;
 	savedAngle[(gsNode->ShotNum) / 2] = angle;
-	//投げてそのノードに移動するために代入
-	/*if (itr != currState.end()) {
-		//設定されている場合の処理
-	}
-	else {
-		//設定されていない場合の処理
-		//ノードを追加
-		situation.at(gsNode->ShotNum).at(num) = situation.at(gsNode->ShotNum).size() + 1;
-	}*/
 }
 
 
@@ -155,179 +141,28 @@ bool GetContents(const string& filename, vector<vector<string>>& table, const ch
 	return true;
 }
 
-void Node::saveNode() {
-	ofstream logging;
-	string filename = "nodeLog.csv";
-	vector<vector<string>> table;
-	bool status = false;
-	status = status = GetContents(filename, table);
-	logging.open("nodeLog.csv", ios::app);
-	logging << gsNode->ShotNum <<",";
-	logging << KEY << ",";
-	for (int p = 0; p < shotVariation; p++) {//find highest value and its index
-		for (int s = 0; s < stateNum; s++) {
-			for (int a = 0; a < 2; a++) {
-				logging << Qtable[(p * 16 + s) * 2 + a];
-				if (!(p == shotVariation - 1 && s == stateNum - 1 && a == 1)) {
-					logging << ",";
-				}
-			}
-		}
-	}
-	logging.close();
-}
 
-
-/*
-Node::Node(const GAMESTATE* const gs) {
-gsNode	= new GAMESTATE(*gs);
-eval = getScore();
-setQtable();
-}
-void Node::setQtable() {
-for (int i = 0; i < stateNum; i++) {
-for (int j = 0; j < shotVariation; j++) {
-Qtable[i*stateNum + j] = 0;
-}
-}
-}
-double Node::getScore() {
-double a;
-a = 3.0 / 2.0;
-return a;
-}
-
-void Node::updateQ(Node *curr) {
-
-}
-void Node::changeEval() {
-Node *curr = this;
-while (curr->gsNode->ShotNum != 0) {
-updateQ(curr);
-curr = curr->parent;
-}
-}
-
-void Node::addChildrenByMontecarlo(const GAMESTATE* const gs) {
-float pos[2];
-SHOTVEC vec;
-GAMESTATE *currGS;
-for (int i = 0; i < situation.size(); i++) {
-for (int p = 0; p <= 16; p++) {
-currGS = new GAMESTATE(*gs);
-SHOTPOS shot;
-PolarToCartesian(i, pos);//posに狙う座標が代入される
-float posX = pos[0];
-float posY = pos[1];
-shot.x = posX;
-shot.y = posY;
-shot.angle = 0;
-CreateHitShot(shot, p, &vec);
-Simulation(currGS, vec, 0.3f, NULL, -1);
-shoted->push_back(shot);
-power->push_back(p);
-gsNode = currGS;
-Node tmp = Node(gsNode);
-if (tmp.eval >= 0000000) {
-tmp.parent = this;
-children.push_back(&tmp);
-}
-}
-}
-}
-
-void Node::addChildrenByQ(const GAMESTATE* const gs) {
-float pos[2];
-SHOTVEC vec;
-GAMESTATE *currGS;
-currGS = new GAMESTATE(*gs);
-SHOTPOS shot;
-int indexS;
-int indexP;
-int max = -9999;
-for (int j = 0; j < shotVariation; j++) {
-for (int i = 0; i < stateNum; i++) {
-int qval = Qtable[j*shotVariation + i];
-if (qval > max) {
-max = qval;
-indexS = i;
-indexP = j;
-}
-}
-}
-PolarToCartesian(indexS, pos);//posに狙う座標が代入される
-float posX = pos[0];
-float posY = pos[1];
-shot.x = posX;
-shot.y = posY;
-shot.angle = 0;
-CreateHitShot(shot, indexP, &vec);
-Simulation(currGS, vec, 0.3f, NULL, -1);
-int no = searchPolar(currGS);
-//currGSをstring情報に変換して同じものがなければpush
-//if(states.at(no)==(string)0){}
-Node tmp = Node(gsNode);
-}
-
-
-
-*/
-/*
-void saveGameState(const GAMESTATE* const gs) {
-gameState[gs->ShotNum] = GAMESTATE(*gs);
-}
-void saveShotAndStateAndPower(const GAMESTATE* const gs, SHOTPOS *pos,float power) {
-gameState[gs->ShotNum] = GAMESTATE(*gs);
-shotPos[gs->ShotNum] = SHOTPOS(*pos);
-shotPower[gs->ShotNum] = power;
-}
-void initState(<< "a";
-for (int i = 0; i < 16; i++) {
-memset(gameState[i].body, 0x00, sizeof(float) * 32);
-memset(gameState[i].Score, 0x00, sizeof(int) * 10);
-gameState[i].LastEnd = 0;
-gameState[i].CurEnd = 0;
-gameState[i].ShotNum = 0;
-gameState[i].WhiteToMove = 0;
-}
-}
-void initPos() {
-for (int i = 0; i < 16; i++) {
-shotPos[i].angle = 0;
-shotPos[i].x = 0.0;
-shotPos[i].y = 0.0;
-}
-}
-void initPower() {
-for (int i = 0; i < 16; i++) {
-shotPower[i] = 0;
-}
-}
-*/
 
 void outLogs(Node *curr[8]) {
-	//cerr << searchPolar(curr->gsNode) << endl;
-	//cerr << "loadQtable\n";
 	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
 	string line;
 	int size = 0;
 	vector<vector<string>>strvec;
-	while (getline(ifs, line)) {
+	while (getline(ifs, line)) {//一旦表をstrvecにしまっておく
 		strvec.push_back(split(line, ','));
 	}
-	//cerr << "start logging\n";
 	ofstream logging;
 	string filename = "C:\\DigitalCurlingSimulate\\Release\\Qtable.csv";
 	vector<vector<string>> table;
 	bool status = false;
-	logging.open(filename, ios::trunc);
+	logging.open(filename, ios::trunc);//表をすべて消す
 	logging.close();
-	logging.open(filename, ios::app);
+	logging.open(filename, ios::app);//表を追記モードにする
 	status = status = GetContents(filename, table);
 	//cerr << "strvec.size()=" << strvec.size() << endl;
 	string polar[8];
 	bool isExist[8];
-	for (int n = 0; n < 8; n++) {
+	for (int n = 0; n < 8; n++) {//8つのノードに対して
 		//cerr << "--------------------------------------\n";
 		//cerr << curr[n]->gsNode->ShotNum << endl;
 		//cerr << searchPolar(curr[n]->gsNode) << endl;
@@ -337,8 +172,9 @@ void outLogs(Node *curr[8]) {
 		cerr << polar[n] << endl;
 	//	cerr << "now\n";
 		for (int i = 0; i < strvec.size(); i++) {
+			//同じターン、状況ならデータを書き換える
 			if (stoi(strvec.at(i).at(0)) == curr[n]->gsNode->ShotNum&& stoi(strvec.at(i).at(1)) == stoi(polar[n])) {
-				isExist[n] = true;
+				isExist[n] = true;//同じデータが有ったかどうか
 				vector<string> newStr;
 				newStr.push_back(to_string(curr[n]->gsNode->ShotNum));
 				newStr.push_back(polar[n]);
@@ -351,6 +187,7 @@ void outLogs(Node *curr[8]) {
 		}
 	//	cerr << "here\n";
 	}
+	//書き換えた後の表を書き出す
 	for (int i = 0; i < strvec.size(); i++) {
 		for (int j = 0; j < strvec.at(i).size(); j++) {
 			logging << strvec.at(i).at(j);
@@ -359,6 +196,8 @@ void outLogs(Node *curr[8]) {
 		cerr << "processing complete rate is" << i << "/" << strvec.size() << endl;
 		logging << endl;
 	}
+
+	//同じデータが無かったノードを追加で書き込む
 	for (int n = 0; n < 8; n++) {
 		if (isExist[n])	cerr << "isExist["<<n<<"] ==true" << endl;
 		if (!isExist[n])	cerr << "isExist[" << n << "] ==false" << endl;

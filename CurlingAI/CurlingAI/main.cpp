@@ -210,7 +210,8 @@ bool processCommand(char *command)
 			return false;
 		}
 		GameState.Score[GameState.CurEnd] = atoi(buffer);
-		//cerr << "Qlearning\n";
+		
+		//スコアが代入された後に更新
 		extern Node *savedNode[8];
 		extern int savedIndexP[8];
 		extern int savedIndexS[8];
