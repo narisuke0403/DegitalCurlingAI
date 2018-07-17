@@ -23,6 +23,25 @@ vector<string> split(string& input, char delimiter)
 	return result;
 }
 
+void makeSituationByQtable() {
+	while (situation.size() < 16) {
+		unordered_map<string, int> line;
+		situation.push_back(line);
+	}
+	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
+	string line;
+	string KEY;
+	int turn = 0;
+	while (getline(ifs, line)) {
+		while (getline(ifs, line)) {
+			vector<string> strvec = split(line, ',');
+			KEY = strvec.at(1);
+			turn = stoi(strvec.at(0));
+			situation.at(turn)[KEY] = situation.at(turn).size() + 1;
+		}
+	}
+}
+
 //最初に一度呼んで離散化させておく関数
 //ファイルから数値を読み込むため、一度だけ呼ぶこと
 void dividePolar() {
@@ -53,6 +72,7 @@ void dividePolar() {
 			i++;
 		}
 	}
+	makeSituationByQtable();
 }
 
 void divideCartesian() {
@@ -113,7 +133,7 @@ int searchPolar(const GAMESTATE* const gs, string* _pos) {
 			}
 		}
 	}
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 6; i++) {
 		get_ranking(stone_num, RANK_rank);
 		for (int t = 0; t < min1.size(); t++) {
 			if (a[stone_num[i]] > stof(min1.at(t)) && a[stone_num[i]] < stof(max1.at(t)) && r[stone_num[i]] > stof(min2.at(t)) && r[stone_num[i]] < stof(max2.at(t))) {
@@ -127,11 +147,6 @@ int searchPolar(const GAMESTATE* const gs, string* _pos) {
 	//cerr << "pos="<< pos << endl;
 	*_pos = pos;
 	//cerr << *_pos << endl;
-	while (situation.size() < 16 && (situation.size() < gs->ShotNum+1||situation.size()==0)) {
-	//	cerr << "in the first if\n";
-		unordered_map<string, int> line;
-		situation.push_back(line);
-	}
 	//cerr << "gs->ShotNum=" << gs->ShotNum << endl;
 	//cerr << "situation.at(0).size()=" << situation.at(0).size()<< endl;
 	//cerr << "situation.at(gs->ShotNum).size()=" << situation.at(gs->ShotNum).size() << endl;
@@ -158,3 +173,4 @@ void PolarToCartesian(int number, float* pos) {
 	pos[0] = x;
 	pos[1] = y;
 }
+

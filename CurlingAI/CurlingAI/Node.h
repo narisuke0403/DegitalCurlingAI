@@ -14,7 +14,7 @@ public:
 	GAMESTATE * gsNode;
 	Node *parent;
 	double eval;
-	int KEY;
+	std::string KEY;
 	float Qtable[stateNum*shotVariation * 2];
 	std::vector<std::vector<std::string> > states;
 	std::vector<Node*> children;
