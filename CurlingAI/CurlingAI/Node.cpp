@@ -17,7 +17,7 @@ Node::Node(const GAMESTATE* const gs) {
 
 //Qƒe[ƒuƒ‹‚ğ“Ç‚İ‚ñ‚Å‘ã“ü
 void Node::loadQtable() {
-	ifstream ifs("C:\DigitalCurling_Ver1.16 - VS2015\Release\Qtable.csv");
+	ifstream ifs("C:\\DigitalCurling_Ver1.16 - VS2015\\Release\\Qtable.csv");
 	string line;
 	bool isExist = false;
 	int size = 0;
@@ -144,6 +144,7 @@ bool GetContents(const string& filename, vector<vector<string>>& table, const ch
 
 
 void outLogs(Node *curr[8]) {
+	ofstream("C:\\DigitalCurlingSimulate\\Release\\Qtable1.csv");
 	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
 	string line;
 	int size = 0;
@@ -219,6 +220,3 @@ void outLogs(Node *curr[8]) {
 	cerr << "end logging\n";
 	logging.close();
 }
-/*
-
-*/
