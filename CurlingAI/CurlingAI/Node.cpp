@@ -22,21 +22,6 @@ void Node::loadQtable() {
 	bool isExist = false;
 	int size = 0;
 	while (getline(ifs, line)) {
-		/*
-		int count = 0;
-		vector<string> stringvec = split(line, ',');
-		size = stringvec.size();
-		//0=turn,1=KEY, 2~Qtable
-		KEY = stringvec.at(1);
-		if (situation.at(gsNode->ShotNum)[KEY] != 0) {
-			for (int i = 2; i < stringvec.size(); i++) {
-				//cerr << count << endl;
-				Qtable[count] = stof(stringvec.at(i));
-				count++;
-			}
-			isExist = true;
-		}
-		*/
 		std::string pos = "";
 		int number = searchPolar(gsNode,&pos);
 		vector<string> stringvec = split(line, ',');

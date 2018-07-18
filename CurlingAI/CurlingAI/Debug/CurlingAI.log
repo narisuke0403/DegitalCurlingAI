@@ -1,8 +1,2 @@
-﻿  Node.cpp
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(49): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(113): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(193): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(208): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(209): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(211): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-  CurlingAI.vcxproj -> C:\Users\sungw\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe
+﻿  Qlearning.cpp
+  CurlingAI.vcxproj -> C:\Users\park sungwoo\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe
