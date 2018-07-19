@@ -201,8 +201,7 @@ void throwSample(const GAMESTATE* const gs, SHOTVEC *vec_ret) {
 
 void throwNode(const GAMESTATE* const gs, SHOTVEC *vec_ret) {
 	Node *curr = new Node(gs);
-	Node *next = new Node(gs);
-	curr->throwAndAddNode(vec_ret, next);
+	curr->throwAndAddNode(vec_ret, curr);
 	//cerr << "x" << vec_ret->x << "y" << vec_ret->y << "a" << vec_ret->angle << endl;
 }
 
@@ -249,7 +248,6 @@ void selectRandomVecter(const GAMESTATE* const gs, SHOTVEC *vec) {
 
 }
 
-Vector::Vector() {}
 Vector::Vector(const GAMESTATE* const gs, int rank) {
 	x = gs->body[rank][0] - 2.375;//distance from (0,0)
 	y = gs->body[rank][1] - 4.88;

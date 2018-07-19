@@ -10,7 +10,10 @@ void Qlearning(Node *now, Node next, int indexP, int indexS, int angle) {
 	float lamda = 1; //Š„ˆø—¦A‚Ì‚¿‚ÉŠÖ”‚É‚µ‚Ä‘Î‰ž‚·‚é‚±‚Æ‚à‰Â
 	//float score = 0;
 	int score = 0;// now->gsNode->Score[now->gsNode->CurEnd];
-	
+	for (int i = 0; i < stateNum * 16 * 2;i++) {
+		score += next.Qtable[i];
+	}
+	score = score / stateNum * 16 * 2;
 
 	int next_max_score = -1;
 	for (int i = 0; i < 43200; i++) {

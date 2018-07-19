@@ -5,6 +5,7 @@
 #include <fstream>
 #include <random>
 #include <crtdbg.h>
+#include <time.h>
 extern vector<unordered_map<string, int>> situation;
 Node *savedNode[8];
 int savedIndexP[8];
@@ -15,21 +16,45 @@ Node::Node(const GAMESTATE* const gs) {
 	loadQtable();
 }
 
+
+vector<string> checksplit(string& input, char delimiter)
+{
+	istringstream stream(input);
+	string field;
+	vector<string> result;
+	int count = 0;
+	while (getline(stream, field, delimiter)) {
+		count++;
+		result.push_back(field);
+		if (count == 2) {
+			return result;
+		}
+	}
+}
+
+
 //Qテーブルを読み込んで代入
 void Node::loadQtable() {
-	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
+	ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
+	if (ifs.is_open()) {
+		cerr << "file can open" << endl;
+	}
+	else {
+		cerr << "file cannot open" << endl;
+	}
 	string line;
 	bool isExist = false;
 	int size = 0;
 	while (getline(ifs, line)) {
 		std::string pos = "";
 		int number = searchPolar(gsNode,&pos);
-		vector<string> stringvec = split(line, ',');
+		vector<string> stringvec = checksplit(line, ',');
 		KEY = stringvec.at(1);
 		//シチュエーションとして現在の状態が保存されているか？
 		if (situation.at(gsNode->ShotNum)[KEY] != 0) {
 			//シチュエーションとして登録してある場合、それはどこの場所か
 			if (situation.at(gsNode->ShotNum)[KEY] == situation.at(gsNode->ShotNum)[pos]) {
+				vector<string> stringvec = split(line, ',');
 				cerr << "find same situation" << endl;
 				for (int i = 2; i < stringvec.size(); i++) {
 					//cerr << count << endl;
@@ -49,8 +74,7 @@ void Node::loadQtable() {
 }
 
 
-void Node::throwAndAddNode(SHOTVEC *vec, Node *next) {
-	Node *curr = new Node(gsNode);
+void Node::throwAndAddNode(SHOTVEC *vec, Node *curr) {
 	float max = -100;
 	vector<int> *sameValues = new vector<int>();
 
@@ -146,7 +170,7 @@ bool GetContents(const string& filename, vector<vector<string>>& table, const ch
 
 void outLogs(Node *curr[8]) {
 	//一旦表をstrvecにしまっておく
-	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
+	ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
 	string line;
 	int size = 0;
 	vector<vector<string>>strvec;
@@ -155,14 +179,15 @@ void outLogs(Node *curr[8]) {
 	}
 
 	ofstream logging;
-	string filename = "C:\\DigitalCurlingSimulate\\Release\\Qtable.csv";
+	time_t now = time(NULL); 
+	struct tm *pnow = localtime(&now);
+	string filename = "C:\\DigitalCurlingSimulate\\Qtable" + to_string(pnow->tm_hour) + "-" + to_string(pnow->tm_min) + "-" + to_string(pnow->tm_sec) + ".csv";
 	vector<vector<string>> table;
 	bool status = false;
 	logging.open(filename, ios::trunc);//表をすべて消す
 	logging.close();
 	logging.open(filename, ios::app);//表を追記モードにする
 	status = GetContents(filename, table);
-	//cerr << "strvec.size()=" << strvec.size() << endl;
 	string polar[8];
 	bool isExist[8];
 	for (int n = 0; n < 8; n++) {//8つのノードに対して
@@ -195,27 +220,19 @@ void outLogs(Node *curr[8]) {
 			logging << strvec.at(i).at(j);
 			if (j < strvec.at(i).size() - 1)logging << ",";
 		}
-		cerr << "processing complete rate is" << i << "/" << strvec.size() << endl;
 		logging << endl;
 	}
 
 	//同じデータが無かったノードを追加で書き込む
 	for (int n = 0; n < 8; n++) {
-		if (isExist[n])	cerr << "isExist["<<n<<"] ==true" << endl;
-		if (!isExist[n])	cerr << "isExist[" << n << "] ==false" << endl;
 		if (!isExist[n]) {
-			cerr << "no\n";
 			logging << curr[n]->gsNode->ShotNum << ",";
-			cerr << "yes\n";
 			logging << polar[n] << ",";
-			cerr << "all number is" << stateNum * shotVariation * 2 << endl;
 			for (int i = 0; i < stateNum*shotVariation * 2; i++) {
-				if (i % 5000 == 0)cerr << i << "/" << stateNum * shotVariation * 2 << "is ended\n";
 				logging << curr[n]->Qtable[i];
 				if (i < stateNum*shotVariation * 2 - 1)logging << ",";
 			}
 			logging << endl;
-			cerr << "endlogging" << n << endl;
 		}
 	}
 	cerr << "end logging\n";

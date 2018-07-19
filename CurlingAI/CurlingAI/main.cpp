@@ -134,9 +134,6 @@ bool processCommand(char *command)
 	else if (_stricmp(cmd, "ISREADY") == 0) {
 		// initialize GameState
 		initGameState(&GameState);
-		cerr << "init";
-		//initState();
-		//initPos();
 		sendCommand("READYOK");
 	}
 	else if (_stricmp(cmd, "POSITION") == 0) {
@@ -181,8 +178,6 @@ bool processCommand(char *command)
 		else {
 			GameState.WhiteToMove = false;
 		}
-		//save to monteQ
-		//saveGameState(&GameState);
 	}
 	else if (_stricmp(cmd, "GO") == 0) {
 		SHOTVEC vec;
@@ -233,8 +228,8 @@ bool processCommand(char *command)
 				Qlearning(savedNode[i], *savedNode[i + 1], savedIndexP[i], savedIndexS[i], savedAngle[i]);
 			}
 		}
-		outLogs(savedNode);
-		cerr << "end logging\n";
+		thread t1(outLogs,savedNode);
+		t1.detach();
 	}
 	else if (_stricmp(cmd, "Node") == 0) {
 		Node* node = new Node(&GameState);
@@ -255,7 +250,6 @@ int main()
 	}
 
 	// process command
-	int count = 0;
 	dividePolar();
 	while (1) {
 		memset(message, 0x00, sizeof(message));

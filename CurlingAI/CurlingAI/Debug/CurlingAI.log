@@ -1,2 +1,9 @@
-﻿  Qlearning.cpp
-  CurlingAI.vcxproj -> C:\Users\park sungwoo\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe
+﻿  Node.cpp
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(59): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(122): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(203): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(218): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(219): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(221): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(33): warning C4715: 'checksplit': 値を返さないコントロール パスがあります。
+  CurlingAI.vcxproj -> C:\Users\sungw\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe

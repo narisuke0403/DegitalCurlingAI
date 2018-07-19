@@ -28,7 +28,7 @@ void makeSituationByQtable() {
 		unordered_map<string, int> line;
 		situation.push_back(line);
 	}
-	ifstream ifs("C:\\DigitalCurlingSimulate\\Release\\Qtable.csv");
+	ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
 	string line;
 	string KEY;
 	int turn = 0;
