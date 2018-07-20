@@ -38,13 +38,22 @@ vector<string> checksplit(string& input, char delimiter)
 //Qテーブルを読み込んで代入
 void Node::loadQtable() {
 	string loadfilename = "";
+
+	ifstream file;
+	file.open("latestversion.txt");
+	vector<string> result;
+	while (getline(file, loadfilename)) {
+		result.push_back(loadfilename);
+	}
+	loadfilename = result.at(0);
 	cerr << loadfilename << endl;
-	ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
+	ifstream ifs(loadfilename);
 	if (ifs.is_open()) {
 		cerr << "file can open" << endl;
 	}
 	else {
 		cerr << "file cannot open" << endl;
+		ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
 	}
 	string line;
 	bool isExist = false;
@@ -85,14 +94,17 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *curr) {
 	//Qテーブルの最大値とそのインデックスを保存
 	for (int p = 10; p < shotVariation; p++) {//find highest value and its index
 		for (int s = 0; s < stateNum; s++) {
-			for (int a = 0; a < 2; a++) {
-				if (Qtable[(p * 16 + s) * 2 + a] > max) {
-					if(max!=-100)free(sameValues);
-					max = Qtable[(p * 16 + s)];
-					sameValues->push_back((p * 16 + s) * 2 + a);
-				}
-				else if (Qtable[(p * 16 + s) * 2 + a] == max) {
-					sameValues->push_back((p * 16 + s) * 2 + a);
+			if(searchRANK(s) > 6){
+				for (int a = 0; a < 2; a++) {
+					if (Qtable[(p * 16 + s) * 2 + a] > max) {
+						if (max != -100)free(sameValues);
+						max = Qtable[(p * 16 + s)];
+						sameValues->push_back((p * 16 + s) * 2 + a);
+					}
+					else if (Qtable[(p * 16 + s) * 2 + a] == max) {
+						sameValues->push_back((p * 16 + s) * 2 + a);
+					}
+
 				}
 			}
 		}
@@ -101,11 +113,10 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *curr) {
 	mt19937 mt(rnd());     //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
 	uniform_int_distribution<> rand100(0, sameValues->size());        // [0, sameValues.size()] 範囲の一様乱数
 	int index = sameValues->at(rand100(mt));//同じ値のデータをランダムに選択
-	
 	//インデックスからそれぞれの値を求める
 	int angle = index % 2;
 	int tmp = (index - angle) / 2;
-	int indexS = tmp%shotVariation;
+	int indexS = tmp%1315;
 	int indexP = int(tmp%shotVariation);
 
 	//ショットを打つ場所を決めるポジションを初期化
@@ -119,6 +130,8 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *curr) {
 	shot.y = pos[1];
 	shot.angle = angle;
 
+	cerr << "x:" << shot.x << endl;
+	cerr << "y:" << shot.y << endl;
 
 	string key="";
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
@@ -174,7 +187,24 @@ bool GetContents(const string& filename, vector<vector<string>>& table, const ch
 
 void outLogs(Node *curr[8]) {
 	//一旦表をstrvecにしまっておく
-	ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
+	string loadfilename = "";
+
+	ifstream file;
+	file.open("latestversion.txt");
+	vector<string> result;
+	while (getline(file, loadfilename)) {
+		result.push_back(loadfilename);
+	}
+	loadfilename = result.at(0);
+	cerr << loadfilename << endl;
+	ifstream ifs(loadfilename);
+	if (ifs.is_open()) {
+		cerr << "file can open" << endl;
+	}
+	else {
+		cerr << "file cannot open" << endl;
+		ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
+	}
 	string line;
 	int size = 0;
 	vector<vector<string>>strvec;

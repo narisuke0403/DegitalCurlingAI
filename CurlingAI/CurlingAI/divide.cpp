@@ -160,6 +160,10 @@ void searchCartesian() {
 
 }
 
+int searchRANK(int state) {
+	return stoi(RANK[state]);
+}
+
 void PolarToCartesian(int number, float* pos) {
 	pos[0] = 0;
 	pos[1] = 0;
@@ -168,8 +172,10 @@ void PolarToCartesian(int number, float* pos) {
 	float max_XA = cos(stof(max1[number]) * M_PI / 180);
 	float min_YA = sin(stof(min1[number]) * M_PI / 180);
 	float max_YA = sin(stof(max1[number]) * M_PI / 180);
-	float x = (stof(min2[number]) * min_XA + stof(max2[number]) * max_XA) / 2;
-	float y = (stof(min2[number]) * min_YA + stof(max2[number]) * max_YA) / 2;
+	cerr << min1[number] << endl;
+	cerr << min_XA << "," << max_XA << "," << min_YA << "," << max_YA << endl << min2[number] << "," << max2[number] << endl;
+	float x = (2.375 + stof(min2[number]) * min_XA + 2.375 + stof(min2[number]) * max_XA + 2.375 + stof(max2[number]) * min_XA + 2.375 + stof(max2[number]) * max_XA)/4;
+	float y =  (4.88 + stof(min2[number]) * min_YA + 4.88 + stof(min2[number]) * max_YA + 4.88 + stof(max2[number]) * min_YA + 4.88 + stof(max2[number]) * max_YA)/ 4;
 	pos[0] = x;
 	pos[1] = y;
 }

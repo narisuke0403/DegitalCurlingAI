@@ -1,9 +1,9 @@
 ﻿  Node.cpp
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(63): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(126): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(207): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(222): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(223): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(225): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\sungw\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(34): warning C4715: 'checksplit': 値を返さないコントロール パスがあります。
-  CurlingAI.vcxproj -> C:\Users\sungw\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe
+c:\users\park sungwoo\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(72): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\park sungwoo\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(139): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\park sungwoo\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(237): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\park sungwoo\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(252): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\park sungwoo\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(253): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\park sungwoo\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(255): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\park sungwoo\documents\github\degitalcurlingai\curlingai\curlingai\node.cpp(34): warning C4715: 'checksplit': 値を返さないコントロール パスがあります。
+  CurlingAI.vcxproj -> C:\Users\park sungwoo\Documents\GitHub\DegitalCurlingAI\CurlingAI\Debug\CurlingAI.exe

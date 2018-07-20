@@ -232,7 +232,9 @@ bool processCommand(char *command)
 		t1.detach();
 	}
 	else if (_stricmp(cmd, "Node") == 0) {
-		Node* node = new Node(&GameState);
+		float pos[2];
+		PolarToCartesian(777, pos);
+		cerr << "x: " << pos[0] << " y; " << pos[1] << endl;
 	}
 
 	return true;

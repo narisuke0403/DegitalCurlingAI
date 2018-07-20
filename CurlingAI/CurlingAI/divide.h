@@ -19,6 +19,7 @@ void dividePolar();
 void divideCartesian();
 int searchPolar(const GAMESTATE* const gs,string* _pos);
 void searchCartesian();
+int searchRANK(int state);
 void PolarToCartesian(int number, float* pos);
 
 #endif
