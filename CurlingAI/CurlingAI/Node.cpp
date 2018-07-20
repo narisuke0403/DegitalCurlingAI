@@ -17,7 +17,6 @@ Node::Node(const GAMESTATE* const gs) {
 	loadQtable();
 }
 
-
 vector<string> checksplit(string& input, char delimiter)
 {
 	istringstream stream(input);
@@ -25,11 +24,11 @@ vector<string> checksplit(string& input, char delimiter)
 	vector<string> result;
 	int count = 0;
 	while (getline(stream, field, delimiter)) {
-		count++;
-		result.push_back(field);
 		if (count == 2) {
 			return result;
 		}
+		result.push_back(field);
+		count++;
 	}
 }
 
@@ -40,7 +39,7 @@ void Node::loadQtable() {
 	string loadfilename = "";
 
 	ifstream file;
-	file.open("latestversion.txt");
+	file.open("C:\\DigitalCurlingSimulate\\data\\latestversion.txt");
 	vector<string> result;
 	while (getline(file, loadfilename)) {
 		result.push_back(loadfilename);
@@ -53,7 +52,7 @@ void Node::loadQtable() {
 	}
 	else {
 		cerr << "file cannot open" << endl;
-		ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
+		ifstream ifs("C:\\DigitalCurlingSimulate\\data\\Qtable.csv");
 	}
 	string line;
 	bool isExist = false;
@@ -67,8 +66,9 @@ void Node::loadQtable() {
 		if (situation.at(gsNode->ShotNum)[KEY] != 0) {
 			//シチュエーションとして登録してある場合、それはどこの場所か
 			if (situation.at(gsNode->ShotNum)[KEY] == situation.at(gsNode->ShotNum)[pos]) {
-				vector<string> stringvec = split(line, ',');
 				cerr << "find same situation" << endl;
+				vector<string> stringvec = split(line, ',');
+				cerr << stringvec.at(135);
 				for (int i = 2; i < stringvec.size(); i++) {
 					//cerr << count << endl;
 					Qtable[i-2] = stof(stringvec.at(i));
@@ -86,39 +86,44 @@ void Node::loadQtable() {
 	}
 }
 
-
+//現ノードでの石の投げ方
 void Node::throwAndAddNode(SHOTVEC *vec, Node *curr) {
-	float max = -100;
+	float max = 0;
 	vector<int> *sameValues = new vector<int>();
-
+	vector<int> *powerValues = new vector<int>();
+	float margin = 3;
 	//Qテーブルの最大値とそのインデックスを保存
-	for (int p = 10; p < shotVariation; p++) {//find highest value and its index
-		for (int s = 0; s < stateNum; s++) {
-			if(searchRANK(s) > 6){
+	for (int s = 0; s < stateNum; s++) {
+		if (searchRANK(s) > 6) {
+			for (int p = 0; p < shotVariation; p++) {//find highest value and its index
 				for (int a = 0; a < 2; a++) {
-					if (Qtable[(p * 16 + s) * 2 + a] > max) {
-						if (max != -100)free(sameValues);
-						max = Qtable[(p * 16 + s)];
-						sameValues->push_back((p * 16 + s) * 2 + a);
+					if (Qtable[((p+1) * s -1) * 2 + a] - max > margin) {
+						sameValues->clear();
+						powerValues->clear();
+						max = Qtable[((p + 1) * s) * 2 + a];
+						sameValues->push_back(((p+1) * s -1) * 2 + a);
+						powerValues->push_back(p);
 					}
-					else if (Qtable[(p * 16 + s) * 2 + a] == max) {
-						sameValues->push_back((p * 16 + s) * 2 + a);
+					else if (Qtable[((p+1) * s -1) * 2 + a] >= max) {
+						sameValues->push_back(((p+1) * s -1) * 2 + a);
+						powerValues->push_back(p+1);
 					}
-
 				}
 			}
 		}
-	}  
+	}
+	cerr << sameValues->size() << endl;
+	cerr << "finish throw search" << endl;
 	random_device rnd;     // 非決定的な乱数生成器を生成
 	mt19937 mt(rnd());     //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
 	uniform_int_distribution<> rand100(0, sameValues->size());        // [0, sameValues.size()] 範囲の一様乱数
-	int index = sameValues->at(rand100(mt));//同じ値のデータをランダムに選択
+	int rand = rand100(mt);
+	int index = sameValues->at(rand);//同じ値のデータをランダムに選択
 	//インデックスからそれぞれの値を求める
 	int angle = index % 2;
 	int tmp = (index - angle) / 2;
-	int indexS = tmp%1315;
-	int indexP = int(tmp%shotVariation);
-
+	int indexP = powerValues->at(rand);
+	int indexS = tmp / indexP;
 	//ショットを打つ場所を決めるポジションを初期化
 	float pos[2];
 	SHOTPOS shot;
@@ -129,9 +134,6 @@ void Node::throwAndAddNode(SHOTVEC *vec, Node *curr) {
 	shot.x = pos[0];
 	shot.y = pos[1];
 	shot.angle = angle;
-
-	cerr << "x:" << shot.x << endl;
-	cerr << "y:" << shot.y << endl;
 
 	string key="";
 	GAMESTATE *nextGs = new GAMESTATE(*gsNode);
@@ -190,7 +192,7 @@ void outLogs(Node *curr[8]) {
 	string loadfilename = "";
 
 	ifstream file;
-	file.open("latestversion.txt");
+	file.open("C:\\DigitalCurlingSimulate\\data\\latestversion.txt");
 	vector<string> result;
 	while (getline(file, loadfilename)) {
 		result.push_back(loadfilename);
@@ -203,7 +205,7 @@ void outLogs(Node *curr[8]) {
 	}
 	else {
 		cerr << "file cannot open" << endl;
-		ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
+		ifstream ifs("C:\\DigitalCurlingSimulate\\data\\Qtable.csv");
 	}
 	string line;
 	int size = 0;
@@ -215,7 +217,8 @@ void outLogs(Node *curr[8]) {
 	ofstream logging;
 	time_t now = time(NULL); 
 	struct tm *pnow = localtime(&now);
-	string filename = "C:\\DigitalCurlingSimulate\\Qtable" + to_string(pnow->tm_hour) + "-" + to_string(pnow->tm_min) + "-" + to_string(pnow->tm_sec) + ".csv";
+	string filename = "C:\\DigitalCurlingSimulate\\data\\Qtable" + to_string(pnow->tm_hour) + "-" + to_string(pnow->tm_min) + "-" + to_string(pnow->tm_sec) + ".csv";
+	cerr << filename << endl;
 	vector<vector<string>> table;
 	bool status = false;
 	logging.open(filename, ios::trunc);//表をすべて消す
@@ -225,13 +228,8 @@ void outLogs(Node *curr[8]) {
 	string polar[8];
 	bool isExist[8];
 	for (int n = 0; n < 8; n++) {//8つのノードに対して
-		//cerr << "--------------------------------------\n";
-		//cerr << curr[n]->gsNode->ShotNum << endl;
-		//cerr << searchPolar(curr[n]->gsNode) << endl;
-		//cerr << "--------------------------------------\n";
 		isExist[n] = false;
 		searchPolar(curr[n]->gsNode, &polar[n]);
-		cerr << polar[n] << endl;
 
 		//同じターンの場合
 		for (int i = 0; i < strvec.size(); i++) {
@@ -273,8 +271,8 @@ void outLogs(Node *curr[8]) {
 	logging.close();
 
 	ofstream latestversion;
-	latestversion.open("C:\\DigitalCurlingSimulate\\latestversion.txt");
-	cerr << filename << endl;
+	latestversion.open("C:\\DigitalCurlingSimulate\\data\\latestversion.txt");
 	latestversion << filename;
+	cerr << filename << endl;
 	latestversion.close();
 }

@@ -5,4 +5,3 @@
 #include "Node.h"
 #include "divide.h"
 
-//void Qlearning(Node *curr, Node const next, int indexP, int indexS, int angle);

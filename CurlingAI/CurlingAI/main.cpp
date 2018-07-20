@@ -214,18 +214,18 @@ bool processCommand(char *command)
 		for (int i = 0; i < 8; i++) {
 			savedNode[i]->gsNode->Score[savedNode[i]->gsNode->CurEnd] = GameState.Score[GameState.CurEnd];
 		}
-		extern void Qlearning(Node *now, Node next, int indexP, int indexS, int angle);
+		extern float Qlearning(Node *now, Node next, int indexP, int indexS, int angle);
 		for (int i = 7; i >= 0; i--) {
 			if (i == 7) {
 				if (savedNode[i]->gsNode->Score[GameState.CurEnd] > 0) {
-					savedNode[i]->Qtable[(savedIndexP[i] * 16 + savedIndexS[i]) * 2 + savedAngle[i]] = 1;
+					savedNode[i]->Qtable[((savedIndexP[i]+1) * savedIndexS[i]-1) * 2 + savedAngle[i]] += savedNode[i]->gsNode->Score[GameState.CurEnd];
 				}
 				else {
-					savedNode[i]->Qtable[(savedIndexP[i] * 16 + savedIndexS[i]) * 2 + savedAngle[i]] = -1;
+					savedNode[i]->Qtable[((savedIndexP[i]+1) * savedIndexS[i]-1) * 2 + savedAngle[i]] += (8 + savedNode[i]->gsNode->Score[GameState.CurEnd])*0.1;
 				}
 			}
 			else {
-				Qlearning(savedNode[i], *savedNode[i + 1], savedIndexP[i], savedIndexS[i], savedAngle[i]);
+				savedNode[i]->Qtable[((savedIndexP[i] + 1) * savedIndexS[i] - 1) * 2 + savedAngle[i]] = Qlearning(savedNode[i], *savedNode[i + 1], savedIndexP[i], savedIndexS[i], savedAngle[i]);
 			}
 		}
 		thread t1(outLogs,savedNode);

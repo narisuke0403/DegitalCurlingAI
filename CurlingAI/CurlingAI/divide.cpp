@@ -28,7 +28,7 @@ void makeSituationByQtable() {
 		unordered_map<string, int> line;
 		situation.push_back(line);
 	}
-	ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
+	ifstream ifs("C:\\DigitalCurlingSimulate\\data\\Qtable.csv");
 	string line;
 	string KEY;
 	int turn = 0;
@@ -46,7 +46,7 @@ void makeSituationByQtable() {
 //ファイルから数値を読み込むため、一度だけ呼ぶこと
 void dividePolar() {
 	cerr <<"load dividePolar\n";
-	ifstream ifs("out.csv");
+	ifstream ifs("C:\\DigitalCurlingSimulate\\data\\out.csv");
 	string line;
 	int i = 0;
 	while (getline(ifs, line)) {
@@ -172,8 +172,6 @@ void PolarToCartesian(int number, float* pos) {
 	float max_XA = cos(stof(max1[number]) * M_PI / 180);
 	float min_YA = sin(stof(min1[number]) * M_PI / 180);
 	float max_YA = sin(stof(max1[number]) * M_PI / 180);
-	cerr << min1[number] << endl;
-	cerr << min_XA << "," << max_XA << "," << min_YA << "," << max_YA << endl << min2[number] << "," << max2[number] << endl;
 	float x = (2.375 + stof(min2[number]) * min_XA + 2.375 + stof(min2[number]) * max_XA + 2.375 + stof(max2[number]) * min_XA + 2.375 + stof(max2[number]) * max_XA)/4;
 	float y =  (4.88 + stof(min2[number]) * min_YA + 4.88 + stof(min2[number]) * max_YA + 4.88 + stof(max2[number]) * min_YA + 4.88 + stof(max2[number]) * max_YA)/ 4;
 	pos[0] = x;
