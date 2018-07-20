@@ -6,6 +6,7 @@
 #include <random>
 #include <crtdbg.h>
 #include <time.h>
+#include <Windows.h>
 extern vector<unordered_map<string, int>> situation;
 Node *savedNode[8];
 int savedIndexP[8];
@@ -33,8 +34,11 @@ vector<string> checksplit(string& input, char delimiter)
 }
 
 
+
 //Qƒe[ƒuƒ‹‚ğ“Ç‚İ‚ñ‚Å‘ã“ü
 void Node::loadQtable() {
+	string loadfilename = "";
+	cerr << loadfilename << endl;
 	ifstream ifs("C:\\DigitalCurlingSimulate\\Qtable.csv");
 	if (ifs.is_open()) {
 		cerr << "file can open" << endl;
@@ -46,7 +50,7 @@ void Node::loadQtable() {
 	bool isExist = false;
 	int size = 0;
 	while (getline(ifs, line)) {
-		std::string pos = "";
+		string pos = "";
 		int number = searchPolar(gsNode,&pos);
 		vector<string> stringvec = checksplit(line, ',');
 		KEY = stringvec.at(1);
@@ -237,4 +241,10 @@ void outLogs(Node *curr[8]) {
 	}
 	cerr << "end logging\n";
 	logging.close();
+
+	ofstream latestversion;
+	latestversion.open("C:\\DigitalCurlingSimulate\\latestversion.txt");
+	cerr << filename << endl;
+	latestversion << filename;
+	latestversion.close();
 }
